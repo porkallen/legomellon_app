@@ -17,7 +17,8 @@ https://github.com/wit-ai/wit-android-sdk
 
 ## Android Studio+GIT Env Setup
 ### Install Android Studio
-Make sure you have installed GIT Integration/GitHub plugin in Android Studio.
+1. Install Andorid Studio
+2. Go to FILES-> setting -> Plugin. Make sure you have at least installed GIT Integration/GitHub plugin in Android Studio.
 ### Install Git EXE
 Here it is
 https://git-scm.com/downloads
