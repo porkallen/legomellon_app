@@ -15,6 +15,16 @@ https://wit.ai/docs/quickstart
 ### How to connect wit API to Androrid App and GitHub
 https://github.com/wit-ai/wit-android-sdk
 
+## Android Studio+GIT Env Setup
+### Install Android Studio
+Make sure you have installed GIT Integration/GitHub plugin in Android Studio.
+### Install Git EXE
+Here it is
+https://git-scm.com/downloads
+### How to check out a github project step by step
+https://docs.google.com/presentation/d/1Oh7jjjiXf5Z3bsBpTgdvt7jzIMSW9bdV24FpT3jRNeI/edit?usp=sharing
+
+
 
 
 ## Obsolete
