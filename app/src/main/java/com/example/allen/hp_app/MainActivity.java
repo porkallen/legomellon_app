@@ -1,5 +1,4 @@
 package com.example.allen.hp_app;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -32,5 +31,4 @@ public class MainActivity extends AppCompatActivity {
         dumpText.setMinLines(2);
 
     }
-   // public static void main(String args[]){}
 }
