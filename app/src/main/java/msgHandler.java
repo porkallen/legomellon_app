@@ -3,10 +3,10 @@
  */
 
 public class msgHandler {
-    public void conTxtParse(void){boolean sendRecv,String str};
+    public void conTxtParse(boolean sendRecv,String str){};
     public void keywordGet(String str){};
     public void dataTrain(){};
-    public void SendMsg(void){};
-    public void RecvMsg(void){};
+    public void SendMsg(){};
+    public void RecvMsg(){};
 
 }

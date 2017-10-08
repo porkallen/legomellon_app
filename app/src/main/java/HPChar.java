@@ -10,7 +10,7 @@ class HPCharNode{
     private int q_idx;
     public HPCharNode(String name,String[][] qList){
         this.name = name;
-        this.qn = new qNode(qList);
+        this.qn = qList;
         this.flag = true;
     }
     public void qIdxInc(){
