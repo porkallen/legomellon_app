@@ -17,7 +17,7 @@ public class eventHandl {
         }
 
     }
-    public void eventHandler(){
+    public void eventHandler(msgHandler ms){
         Constants CONSTANTS = new Constants();
         String printData;
         HPChar hpChar = new HPChar();
@@ -38,11 +38,27 @@ public class eventHandl {
                 String tmpAns = node.curAnsGet();
                 System.out.println(tmpStr.replaceFirst(CONSTANTS.DEF_NAME,userNode.name));
                 userNode.ans = input.nextLine();
-                System.out.println(userNode.ans);
+                /* debug purpose: Allen
+                try {
+                    ms.SendMsg(userNode.ans);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }*/
+                //System.out.println(userNode.ans);
                 /*
                 * If matched, move on to next question.
                 * If not, stay and loop the question again.
                 * */
+                /*debug purpose: Allen
+                try {
+                    String recvMsg = ms.RecvMsg();
+                    if(containsString(recvMsg,tmpAns,false) == true){
+                        //System.out.println("Match !");
+                        node.qIdxInc();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }*/
                 if(containsString(userNode.ans,tmpAns,false) == true){
                     //System.out.println("Match !");
                     node.qIdxInc();
