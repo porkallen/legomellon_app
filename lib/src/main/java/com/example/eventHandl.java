@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class eventHandl {
     public static int rndIdx = 0;
+    //new comment riah
     private static boolean containsString(String original, String tobeChecked, boolean caseSensitive)
     {
         if (caseSensitive)
