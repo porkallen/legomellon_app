@@ -11,9 +11,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.conversation_main);
         // Get the widgets reference from XML layout
-        final EditText dumpText = (EditText) findViewById(R.id.dumpText);
+        final EditText dumpText = (EditText) findViewById(R.id.input_text);
         /*
             This will provide Scroll option for EditText,
             but it will not show the scroll bar on EditText
