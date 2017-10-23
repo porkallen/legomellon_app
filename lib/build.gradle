@@ -4,6 +4,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(path: ':app')
     compile project(path: ':app')
+    compile project(path: ':app')
+    compile project(path: ':app')
 }
 
 sourceCompatibility = "1.7"

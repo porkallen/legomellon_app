@@ -12,7 +12,8 @@ public class msgHandler implements Runnable{
     private Thread t;
     public final int port = 64300;
     public String recvMsg;
-    static Semaphore semaphore = new Semaphore(1);
+
+    //static Semaphore semaphore = new Semaphore(1);
     public void conTxtParse(boolean sendRecv,String str){};
     public void keywordGet(String str){};
     public void dataTrain(){};
@@ -48,16 +49,18 @@ public class msgHandler implements Runnable{
         catch (IOException e) {
             System.out.println(e);
         }
-
+/*
         try {
             semaphore.acquire();
         }
         catch (InterruptedException e){
             e.printStackTrace();
         }
+        */
         s.close();
     }
     public String RecvMsg()throws Exception {
+        /*
         try {
             System.out.println("Waiting for Recving Msg");
             semaphore.acquire();
@@ -66,6 +69,7 @@ public class msgHandler implements Runnable{
             System.out.println(e);
         }
         semaphore.release();
+        */
         System.out.println("Receiving Msg "+this.recvMsg);
         return this.recvMsg;
     }
@@ -107,7 +111,7 @@ public class msgHandler implements Runnable{
             fromClient = in.readUTF();
             System.out.println("received: " + fromClient);
             this.recvMsg = new String(fromClient);
-            semaphore.release();
+            //semaphore.release();
         }
         server.close();
         System.exit(0);
