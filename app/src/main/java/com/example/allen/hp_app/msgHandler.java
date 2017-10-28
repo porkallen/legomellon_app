@@ -6,121 +6,184 @@ package com.example;
 import com.example.allen.hp_app.Msg;
 import com.example.allen.hp_app.layerView;
 
-import java.io.*;
-import java.net.*;
-import java.util.concurrent.Semaphore;
+import java.io.IOException;
+import java.net.Socket;
+import java.io.ByteArrayOutputStream;
+import java.net.UnknownHostException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import android.util.Log;
+import android.os.AsyncTask;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-
-public class msgHandler implements Runnable{
-    private Thread t;
-    //private ServerSocket server;
-    public final int port = 3535;
-    public String recvMsg;
-    public layerView lv;
-    //static Semaphore semaphore = new Semaphore(1);
-    public void conTxtParse(boolean sendRecv,String str){};
-    public void keywordGet(String str){};
-    public void dataTrain(){};
-
-    public msgHandler(layerView lv){
-        this.lv = lv;
+class msgNode{
+    public int msgType;
+    public String msg;
+}
+class botNode{
+    String botname;
+    String botID;
+    botNode(String name,String id){
+        this.botname = name;
+        this.botID = id;
     }
-    public void SendMsg(String str) throws Exception{
-        Socket s = new Socket();
-        DataOutputStream output;
-        //replaced by future python service
-        String host = "127.0.0.1";
+}
+class botSet{
+    botNode HPNode;
+    botNode[] botMap;
+    botSet(){
+        this.botMap = new botNode[2];
+        this.botMap[0] = new botNode("@Dudley Dursley","<@U7JL8RLEQ>");
+        this.botMap[1] = new botNode("@Aunt Petunia","<@U7JK660E6>");
+        HPNode = new botNode("@Harry Potter","<@U7HQ4QJR2>");
+    }
+}
+public class msgHandler extends AsyncTask<String, String, String>{
+    private Thread t;
+    public final int port = 3535;
+    public layerView lv;
+    public String dstAddress;
+    public int dstPort;
+    public botSet bs;
+    public boolean isMsgDone = false;
+    public String retMsg;
 
-        try
-        {
-            lv.msgUpdate("Send Msg",Msg.TypeSent);
-            //replaced by future python service
-            s.connect(new InetSocketAddress(host , 9999));
-            lv.msgUpdate("Connected",Msg.TypeSent);
+    public msgHandler(layerView lv) throws Exception {
+        this.lv = lv;
+        this.dstAddress = "35.203.167.236";
+        this.dstPort = 9999;
+        this.bs = new botSet();
+    }
+    public String retMsg() {
+        return this.retMsg;
+    }
+    public boolean isMsgDone() {
+        return this.isMsgDone;
+    }
+    public String msgReplace(String ori,String beReplaced,String replacer) {
+        String ret = null;
+        if(ori.replaceAll(" ", "").toLowerCase().startsWith(beReplaced.replaceAll(" ","").toLowerCase())) {
+            ret = ori.replace(beReplaced, replacer);
         }
-        //Host not found
-        catch (UnknownHostException e)
-        {
-            lv.msgUpdate("Don't know about host : " + host,Msg.TypeSent);
-            s.close();
-            System.exit(1);
-        }
-
+        return ret;
+    }
+    public void msgEx(String str){
+        boolean is_sendOut = false;
+        Socket socket = new Socket();
+        InputStream nis = null; //Network Input Stream
+        OutputStream nos = null; //Network Output Stream
+        String ret = "";
         try {
-            output = new DataOutputStream(s.getOutputStream());
-            //Send message to server
-            lv.msgUpdate("==Send MSG "+str+"==",Msg.TypeSent);
-            output.writeUTF(str);
-            System.out.println("============");
+            SocketAddress sockaddr = new InetSocketAddress("35.203.167.236", 9999);
+            //socket = new Socket();
+            socket.connect(sockaddr, 5000); //10 second connection timeout
+            if (socket.isConnected()) {
+                byte[] buffer = new byte[1024];
+                int len = 0;
+                nis = socket.getInputStream();
+                nos = socket.getOutputStream();
+                Log.i("AsyncTask", "doInBackground: Socket created, streams assigned");
+                Log.i("AsyncTask", "doInBackground: Waiting for inital data..."+ bs.botMap.length);
+                for (int i = 0; i < bs.botMap.length; i++) {
+                    String s;
+                    if ((s = msgReplace(str, bs.botMap[i].botname, bs.botMap[i].botID)) != null) {
+                        ret = s;
+                        is_sendOut = true;
+                        break;
+                    }
+                }
+                if (is_sendOut) {
+                    Log.i("AsyncTask", "Send Data: " + ret);
+                    nos.write(ret.getBytes());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(nis));
+                    String line = in.readLine();
+                    String line1 = "";
+                    while (line != null && !line.equals("")) {
+                        line1 += line;
+                        len = len + line.length();
+                        line = in.readLine();
+                        Log.i("AsyncTask", "doInBackground: Waiting for inital data..." + line1);
+                        publishProgress(line1);
+                    }
+                }
+            }
         }
         catch (IOException e) {
-            System.out.println(e);
-        }
-/*
-        try {
-            semaphore.acquire();
-        }
-        catch (InterruptedException e){
             e.printStackTrace();
-        }
-        */
-        lv.msgUpdate("Closed",Msg.TypeSent);
-        s.close();
-    }
-    public String RecvMsg()throws Exception {
-        /*
-        try {
-            System.out.println("Waiting for Recving Msg");
-            semaphore.acquire();
-        }
-        catch (InterruptedException e){
-            System.out.println(e);
-        }
-        semaphore.release();
-        */
-        System.out.println("Receiving Msg "+this.recvMsg);
-        return this.recvMsg;
-    }
-    public void run(){
-        lv.msgUpdate("Creating Msg Handler",Msg.TypeSent);
-        lv.msgUpdate("Running MsgHandler...",Msg.TypeSent);
-        try {
-            this.msgListener();
+            Log.i("AsyncTask", "doInBackground: IOException");
         } catch (Exception e) {
             e.printStackTrace();
+            Log.i("AsyncTask", "doInBackground: Exception");
+        } finally {
+            try {
+                if (socket.isConnected()) {
+                    nis.close();
+                    nos.close();
+                    socket.close();
+                }
+            } catch (IOException e) {
+                Log.getStackTraceString(e);
+            } catch (Exception e) {
+                Log.getStackTraceString(e);
+            }
+            Log.i("AsyncTask", "doInBackground: Finished");
         }
-        lv.msgUpdate("MsgHandler exiting.",Msg.TypeSent);
     }
-    public void start() {
-        lv.msgUpdate("wait for connection on port ",Msg.TypeSent);
-        if (t == null) {
-            t = new Thread (this);
-            t.start ();
+    @Override
+    protected String doInBackground(String ... str) {
+        msgEx(str[0]);
+        return null;
+    }
+    @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+        Log.i("AsyncTask", "onProgressUpdate: Start");
+        if (values != null && values.length > 0) {
+            //Your View attribute object in the activity
+            // already initialized in the onCreate!
+            //lv.msgUpdate(values[0],Msg.TypeReceived);
         }
+        onPostExecute(values[0]);
+        //msgEx(values[0]);
     }
-    public void msgListener()throws Exception {
-        String fromClient;
-        String toClient;
-        //lv.msgUpdate("Sart msgListener"+this.port,Msg.TypeSent);
-        ServerSocket server = new ServerSocket(this.port);
-        //server.setSoTimeout(10000);
-        //lv.msgUpdate("wait for connection on port "+this.port,Msg.TypeSent);
-        //System.out.println("wait for connection on port "+this.port);
+    @Override
+    protected void onPostExecute(String str) {
+        boolean is_sendOut = false;
+        String ret=str;
+        super.onPostExecute(str);
+        Log.i("AsyncTask", "onPostExecute: Start");
+        if (str != null && str.length() > 0) {
+            //msgEx(s);
+            msgHandler mhl;
+            try {
+                for (int i = 0; i < bs.botMap.length; i++) {
+                    String s;
+                    if ((s = msgReplace(str, bs.botMap[i].botID,bs.botMap[i].botname)) != null) {
+                        ret = s;
+                        is_sendOut = true;
+                        break;
+                    }
+                }
+                if(is_sendOut) {//Msg to Bots
+                    lv.msgUpdate(ret,Msg.TypeReceived);
+                    mhl = new msgHandler(this.lv);
+                    mhl.execute(ret);
+                }
+                else{//Msg to HP
+                    if((msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname)) != null){
+                        ret = msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname);
+                    }
+                    lv.msgUpdate(ret,Msg.TypeReceived);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("AsyncTask", "onPostExecute: Exception");
+            }
 
-        boolean run = true;
-        while(run) {
-            this.lv.msgUpdate("Start Listening..."+Inet4Address.getLocalHost().getHostAddress(),Msg.TypeReceived);
-            Socket client = server.accept();
-            this.lv.msgUpdate("got connection to ",Msg.TypeReceived);
-            DataInputStream in = new DataInputStream(client.getInputStream());
-            //BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            fromClient = in.readUTF();
-            //System.out.println("received: " + fromClient);
-            this.recvMsg = new String(fromClient);
-            this.lv.msgUpdate(this.recvMsg, Msg.TypeReceived);
-            //semaphore.release();
         }
-        server.close();
-        System.exit(0);
     }
 }

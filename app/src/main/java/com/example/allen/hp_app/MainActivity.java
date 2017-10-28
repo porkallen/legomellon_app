@@ -6,9 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
+import android.util.Log;
 import com.example.msgHandler;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private MsgAdapter msgAdapter;
     private List<Msg> msgList = new ArrayList<Msg>();
     private layerView lv;
-    private msgHandler ms;
+    private msgHandler mhl;
     @Override
 
     protected void onCreate (Bundle savedInstanceState){
@@ -36,17 +37,19 @@ public class MainActivity extends AppCompatActivity {
         msgListView.setAdapter(msgAdapter);
 
         lv = new layerView(msgAdapter,input,sent,msgListView,msgList);
-        ms = new msgHandler(lv);
-        ms.start();
+        //mhl.start();
         sent.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 String msgContent = input.getText().toString();
                 if (!"".equals(msgContent)){
                     try {
-                        ms.SendMsg(msgContent);
+                        mhl = new msgHandler(lv);
+                        mhl.execute(msgContent);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        lv.msgUpdate("Socket Failed ", Msg.TypeSent);
+                        String stackTrace = Log.getStackTraceString(e);
+                        lv.msgUpdate(stackTrace, Msg.TypeSent);
                     }
                     lv.msgUpdate(msgContent,Msg.TypeSent);
                 }

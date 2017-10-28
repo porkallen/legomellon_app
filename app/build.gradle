@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.allen.hp_app"
-        minSdkVersion 24
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
