@@ -15,10 +15,10 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
-import android.util.Log;
-import android.os.AsyncTask;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import android.util.Log;
+import android.os.AsyncTask;
 
 class msgNode{
     public int msgType;
@@ -33,13 +33,12 @@ class botNode{
     }
 }
 class botSet{
-    botNode HPNode;
+    final botNode HPNode = new botNode("@Harry Potter","<@U7HQ4QJR2>");;
     botNode[] botMap;
     botSet(){
         this.botMap = new botNode[2];
         this.botMap[0] = new botNode("@Dudley Dursley","<@U7JL8RLEQ>");
         this.botMap[1] = new botNode("@Aunt Petunia","<@U7JK660E6>");
-        HPNode = new botNode("@Harry Potter","<@U7HQ4QJR2>");
     }
 }
 public class msgHandler extends AsyncTask<String, String, String>{
@@ -77,6 +76,18 @@ public class msgHandler extends AsyncTask<String, String, String>{
         InputStream nis = null; //Network Input Stream
         OutputStream nos = null; //Network Output Stream
         String ret = "";
+
+        for (int i = 0; i < bs.botMap.length; i++) {
+            String s;
+            if ((s = msgReplace(str, bs.botMap[i].botname, bs.botMap[i].botID)) != null) {
+                ret = s;
+                is_sendOut = true;
+                break;
+            }
+        }
+        if(!is_sendOut){
+            return;
+        }
         try {
             SocketAddress sockaddr = new InetSocketAddress("35.203.167.236", 9999);
             //socket = new Socket();
@@ -87,28 +98,17 @@ public class msgHandler extends AsyncTask<String, String, String>{
                 nis = socket.getInputStream();
                 nos = socket.getOutputStream();
                 Log.i("AsyncTask", "doInBackground: Socket created, streams assigned");
-                Log.i("AsyncTask", "doInBackground: Waiting for inital data..."+ bs.botMap.length);
-                for (int i = 0; i < bs.botMap.length; i++) {
-                    String s;
-                    if ((s = msgReplace(str, bs.botMap[i].botname, bs.botMap[i].botID)) != null) {
-                        ret = s;
-                        is_sendOut = true;
-                        break;
-                    }
-                }
-                if (is_sendOut) {
-                    Log.i("AsyncTask", "Send Data: " + ret);
-                    nos.write(ret.getBytes());
-                    BufferedReader in = new BufferedReader(new InputStreamReader(nis));
-                    String line = in.readLine();
-                    String line1 = "";
-                    while (line != null && !line.equals("")) {
-                        line1 += line;
-                        len = len + line.length();
-                        line = in.readLine();
-                        Log.i("AsyncTask", "doInBackground: Waiting for inital data..." + line1);
-                        publishProgress(line1);
-                    }
+                Log.i("AsyncTask", "Send Data: " + ret);
+                nos.write(ret.getBytes());
+                BufferedReader in = new BufferedReader(new InputStreamReader(nis));
+                String line = in.readLine();
+                String line1 = "";
+                while (line != null && !line.equals("")) {
+                    line1 += line;
+                    len = len + line.length();
+                    line = in.readLine();
+                    Log.i("AsyncTask", "doInBackground: Waiting for inital data..." + line1);
+                    publishProgress(line1);
                 }
             }
         }
@@ -185,5 +185,6 @@ public class msgHandler extends AsyncTask<String, String, String>{
             }
 
         }
+        Log.i("AsyncTask", "onPostExecute: Finished");
     }
 }

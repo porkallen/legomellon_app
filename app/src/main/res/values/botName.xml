@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string-array name="botName">
+            <item>"@Dudley Dursley"</item>
+            <item>"@Aunt Petunia"</item>
+            <item>"@Bob's Hair Cuts"</item>
+            <item>"@Hogford"</item>
+        </string-array>
+</resources>

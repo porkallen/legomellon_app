@@ -1,5 +1,6 @@
 package com.example.allen.hp_app;
 
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -13,12 +14,12 @@ import java.util.List;
 
 public class layerView {
     private ListView msgListView;
-    private EditText input;
+    private AutoCompleteTextView input;
     private Button sent;
     private MsgAdapter msgAdapter;
-    private List<Msg> msgList = new ArrayList<Msg>();
+    private List<Msg> msgList;
 
-    public layerView(MsgAdapter msgAdapter, EditText input, Button sent, ListView msgListView, List<Msg> msgList) {
+    public layerView(MsgAdapter msgAdapter, AutoCompleteTextView input, Button sent, ListView msgListView, List<Msg> msgList) {
         this.msgAdapter = msgAdapter;
         this.input = input;
         this.sent = sent;
