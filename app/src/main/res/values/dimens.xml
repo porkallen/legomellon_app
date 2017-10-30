@@ -4,4 +4,15 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+
+    <!--列表item间距-->
+    <dimen name="item_margin_left_and_right">25px</dimen>
+    <dimen name="item_margin_top_and_bottom">15px</dimen>
+
+    <!--选项间距-->
+    <dimen name="option_item_margin_top">42px</dimen>
+    <dimen name="option_item_margin_left">40px</dimen>
+    <dimen name="option_item_margin_right">40px</dimen>
+
 </resources>

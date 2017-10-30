@@ -14,10 +14,19 @@ import android.view.ViewGroup;
 
 public class subPage1_Chats extends Fragment {
 
+    public subPage1_Chats(){
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.subpage1_chats, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_subpage1_chats, container, false);
 
         return rootView;
     }

@@ -24,14 +24,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:ems="10"
+            android:ems="15"
             android:completionThreshold="1"
-            android:hint="Search Contacts"/>
+            android:hint="Try to @someone"/>
         <Button
             android:id="@+id/send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send" />
+
     </LinearLayout>
 
 

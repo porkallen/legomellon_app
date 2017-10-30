@@ -2,28 +2,20 @@ package com.example.allen.hp_app;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.util.Log;
-import com.example.msgHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.msgHandler;
-import android.view.View.OnClickListener;
+
 import android.view.LayoutInflater;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.text.InputType;
-import java.util.ArrayList;
-import java.util.List;
 import 	android.widget.AutoCompleteTextView;
 import java.util.Map;
 import android.widget.ArrayAdapter;
@@ -52,20 +44,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.welcome_page);
+        //setContentView(R.layout.activity_welcome_page);
 
         AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
         alphaAnimation.setStartOffset(3000);
         alphaAnimation.setDuration(3000);
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LayoutParams default_layout_params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        View view2 = inflater.inflate(R.layout.conversation_main, null);
-        View view1 = inflater.inflate(R.layout.welcome_page, null);
+
+        View view2 = inflater.inflate(R.layout.activity_conversation_main, null);
+        View view1 = inflater.inflate(R.layout.activity_welcome_page, null);
+        View view3 = inflater.inflate(R.layout.activity_tab_view, null);
+
         view1.setVisibility(View.VISIBLE);
-        //view2.setVisibility(View.GONE);
+        view2.setVisibility(View.GONE);
         addContentView(view1, default_layout_params);
         addContentView(view2, default_layout_params);
+        addContentView(view3, default_layout_params);
+
+
         view1.startAnimation(alphaAnimation);
+        view2.setVisibility(View.VISIBLE);
+        view3.bringToFront();
         view1.setVisibility(View.INVISIBLE);
 
         AlphaAnimation alphaAnimation2 = new AlphaAnimation(0.0f, 1.0f);
@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
         view2.clearAnimation();
         view2.startAnimation(alphaAnimation2);
         LinearLayout one = (LinearLayout) findViewById(R.id.convContext);
-        one.startAnimation(alphaAnimation2);
+      //  one.startAnimation(alphaAnimation2);
 
-        msgAdapter = new MsgAdapter( MainActivity.this, R.layout.msg_item, msgList);
+        msgAdapter = new MsgAdapter( MainActivity.this, R.layout.item_msg_bubble, msgList);
         //input = (EditText)findViewById(R.id.input_text);
 
         sent = (Button) findViewById(R.id.send);
