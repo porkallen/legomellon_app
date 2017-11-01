@@ -1,120 +1,137 @@
 package com.example.allen.hp_app;
 
-import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.util.Log;
-
+import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.content.Context;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AlphaAnimation;
-import android.widget.LinearLayout;
-import 	android.widget.AutoCompleteTextView;
-import java.util.Map;
-import android.widget.ArrayAdapter;
-import java.util.HashMap;
-import 	java.util.Arrays;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * Created by Lan on 10/22/17.
- */
+
+
 public class MainActivity extends AppCompatActivity {
 
-    private ListView msgListView;
-    private EditText input;
-    private Button sent;
-    private MsgAdapter msgAdapter;
-    private List<Msg> msgList = new ArrayList<Msg>();
-    private layerView lv;
-    private msgHandler mhl;
-    private AutoCompleteTextView autocompleteView;
 
-    public void PopulatePeopleList(ArrayList<Map<String, String>> mPeopleList) {
-        mPeopleList.clear();
-        Map<String, String> NamePhoneType = new HashMap<String, String>();
-    }
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_welcome_page);
+        Log.i("AsyncTask", "doInBackground: Socket created, streams assigned");
+        setContentView(R.layout.activity_tab_view);
 
-        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
-        alphaAnimation.setStartOffset(3000);
-        alphaAnimation.setDuration(3000);
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LayoutParams default_layout_params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-        View view2 = inflater.inflate(R.layout.activity_conversation_main, null);
-        View view1 = inflater.inflate(R.layout.activity_welcome_page, null);
-        View view3 = inflater.inflate(R.layout.activity_tab_view, null);
-
-        view1.setVisibility(View.VISIBLE);
-        view2.setVisibility(View.GONE);
-        addContentView(view1, default_layout_params);
-        addContentView(view2, default_layout_params);
-        addContentView(view3, default_layout_params);
+      //  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+      //  setSupportActionBar(toolbar);
+      //  getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 
-        view1.startAnimation(alphaAnimation);
-        view2.setVisibility(View.VISIBLE);
-        view3.bringToFront();
-        view1.setVisibility(View.INVISIBLE);
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        AlphaAnimation alphaAnimation2 = new AlphaAnimation(0.0f, 1.0f);
-        alphaAnimation2.setStartOffset(3000);
-        alphaAnimation2.setDuration(1000);
-        //view2.setVisibility(View.INVISIBLE);
-        view2.clearAnimation();
-        view2.startAnimation(alphaAnimation2);
-        LinearLayout one = (LinearLayout) findViewById(R.id.convContext);
-      //  one.startAnimation(alphaAnimation2);
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        setupViewPager(mViewPager);
 
-        msgAdapter = new MsgAdapter( MainActivity.this, R.layout.item_msg_bubble, msgList);
-        //input = (EditText)findViewById(R.id.input_text);
-
-        sent = (Button) findViewById(R.id.send);
-        msgListView = (ListView) findViewById(R.id.msg_list_view);
-        msgListView.setAdapter(msgAdapter);
-        autocompleteView = (AutoCompleteTextView) findViewById(R.id.autoText);
-        lv = new layerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
-        //mhl.start();
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
 
-        int layoutItemId = android.R.layout.simple_dropdown_item_1line;
-        String[] botName = getResources().getStringArray(R.array.botName);
-        List<String> botList = Arrays.asList(botName);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, layoutItemId, botList);
-        autocompleteView.setAdapter(adapter);
-
-        sent.setOnClickListener(new View.OnClickListener(){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.temp_link_tab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                //String msgContent = input.getText().toString();
-                String msgContent = autocompleteView.getText().toString();
-                if (!"".equals(msgContent)){
-                    try {
-                        mhl = new msgHandler(lv);
-                        mhl.execute(msgContent);
-                    } catch (Exception e) {
-                        lv.msgUpdate("Socket Failed ", Msg.TypeSent);
-                        String stackTrace = Log.getStackTraceString(e);
-                        lv.msgUpdate(stackTrace, Msg.TypeSent);
-                    }
-                    lv.msgUpdate(msgContent,Msg.TypeSent);
-                }
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
-
         });
 
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main_chat, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new subPage1_Chats(), "CHATS");
+        adapter.addFragment(new subPage2_Chapters(), "CHAPTERS");
+        viewPager.setAdapter(adapter);
+    }
+
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            Log.i("AsyncTask", "add fragment");
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Log.i("AsyncTask", "getpagetitle");
+            return mFragmentTitleList.get(position);
+        }
+    }
+
+
 }
+
+

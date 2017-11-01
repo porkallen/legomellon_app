@@ -51,7 +51,7 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
 
 
         if( msg.getType() == Msg.TypeReceived) {
-            Uri uri = Uri.parse("android.resource://com.example.allen.hp_app/drawable/" + getName());
+            Uri uri = Uri.parse("android.resource://com.example.allen.hp_app/drawable/bob.png");
             viewHolder.left_img.setImageURI(uri);
 
             viewHolder.LeftLayout.setVisibility(view.VISIBLE);
@@ -69,7 +69,7 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         return view;
     }
 
-    
+
     class ViewHolder{
         LinearLayout LeftLayout;
         LinearLayout RightLayout;
