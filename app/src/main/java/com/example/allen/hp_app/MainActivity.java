@@ -36,6 +36,42 @@ public class MainActivity extends AppCompatActivity {
     private msgHandler mhl;
     private AutoCompleteTextView autocompleteView;
 
+    public void IntroSetup() {
+        /*Animation Usage*/
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutParams default_layout_params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        int delayStart = 3000;
+        int dur = 3000;
+        /*View set*/
+        int introViewIDSet[] = {R.layout.activity_welcome_page,R.layout.activity_conversation_main,R.layout.activity_tab_view};
+        for(int i = 0; i< introViewIDSet.length; i++){
+            AlphaAnimation tmpAnim;
+            View introView = inflater.inflate(introViewIDSet[i], null);
+            int tmpPostVisable = View.INVISIBLE;
+            if(i == 0){//The first view should be Fade Out
+                /*1.0f->0.0f means from appear to disapear*/
+                tmpAnim = new AlphaAnimation(1.0f, 0.0f);
+                /*When the animation will start up*/
+                tmpAnim.setStartOffset(delayStart);
+                /*How long the animation last*/
+                tmpAnim.setDuration(dur);
+            }
+            else{// Others should be fade in
+                tmpAnim = new AlphaAnimation(0.0f, 1.0f);
+                tmpAnim.setStartOffset(delayStart);
+                tmpAnim.setDuration(dur);
+                /*The final one should be Visable*/
+                if(i == (introViewIDSet.length - 1)){
+                    tmpPostVisable = View.VISIBLE;
+                }
+            }
+            delayStart+=dur+1000;
+            addContentView(introView, default_layout_params);
+            introView.startAnimation(tmpAnim);
+            introView.setVisibility(tmpPostVisable);
+        }
+    }
+
     public void PopulatePeopleList(ArrayList<Map<String, String>> mPeopleList) {
         mPeopleList.clear();
         Map<String, String> NamePhoneType = new HashMap<String, String>();
@@ -44,42 +80,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_welcome_page);
-
-        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
-        alphaAnimation.setStartOffset(3000);
-        alphaAnimation.setDuration(3000);
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LayoutParams default_layout_params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-        View view2 = inflater.inflate(R.layout.activity_conversation_main, null);
-        View view1 = inflater.inflate(R.layout.activity_welcome_page, null);
-        View view3 = inflater.inflate(R.layout.activity_tab_view, null);
-
-        view1.setVisibility(View.VISIBLE);
-        view2.setVisibility(View.GONE);
-        addContentView(view1, default_layout_params);
-        addContentView(view2, default_layout_params);
-        addContentView(view3, default_layout_params);
-
-
-        view1.startAnimation(alphaAnimation);
-        view2.setVisibility(View.VISIBLE);
-        view3.bringToFront();
-        view1.setVisibility(View.INVISIBLE);
-
-        AlphaAnimation alphaAnimation2 = new AlphaAnimation(0.0f, 1.0f);
-        alphaAnimation2.setStartOffset(3000);
-        alphaAnimation2.setDuration(1000);
-        //view2.setVisibility(View.INVISIBLE);
-        view2.clearAnimation();
-        view2.startAnimation(alphaAnimation2);
-        LinearLayout one = (LinearLayout) findViewById(R.id.convContext);
-      //  one.startAnimation(alphaAnimation2);
+        IntroSetup();
 
         msgAdapter = new MsgAdapter( MainActivity.this, R.layout.item_msg_bubble, msgList);
         //input = (EditText)findViewById(R.id.input_text);
-
         sent = (Button) findViewById(R.id.send);
         msgListView = (ListView) findViewById(R.id.msg_list_view);
         msgListView.setAdapter(msgAdapter);
