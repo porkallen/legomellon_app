@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
-import android.widget.LinearLayout;
 import 	android.widget.AutoCompleteTextView;
 import java.util.Map;
 import android.widget.ArrayAdapter;
@@ -32,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private Button sent;
     private MsgAdapter msgAdapter;
     private List<Msg> msgList = new ArrayList<Msg>();
-    private layerView lv;
-    private msgHandler mhl;
+    private LayerView lv;
+    private MsgHandler mhl;
     private AutoCompleteTextView autocompleteView;
 
     public void IntroSetup() {
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         int delayStart = 3000;
         int dur = 3000;
         /*View set*/
-        int introViewIDSet[] = {R.layout.activity_welcome_page,R.layout.activity_conversation_main,R.layout.activity_tab_view};
+        int introViewIDSet[] = {R.layout.activity_welcome_page,R.layout.activity_conversation_main};
         for(int i = 0; i< introViewIDSet.length; i++){
             AlphaAnimation tmpAnim;
             View introView = inflater.inflate(introViewIDSet[i], null);
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         msgListView = (ListView) findViewById(R.id.msg_list_view);
         msgListView.setAdapter(msgAdapter);
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.autoText);
-        lv = new layerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
+        lv = new LayerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
         //mhl.start();
 
 
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 String msgContent = autocompleteView.getText().toString();
                 if (!"".equals(msgContent)){
                     try {
-                        mhl = new msgHandler(lv);
+                        mhl = new MsgHandler(lv);
                         mhl.execute(msgContent);
                     } catch (Exception e) {
                         lv.msgUpdate("Socket Failed ", Msg.TypeSent);

@@ -3,59 +3,54 @@ package com.example.allen.hp_app;
 /**
  * Created by allen on 10/2/2017.
  */
-import com.example.allen.hp_app.Msg;
-import com.example.allen.hp_app.layerView;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.io.ByteArrayOutputStream;
-import java.net.UnknownHostException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.SocketAddress;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import android.util.Log;
 import android.os.AsyncTask;
 
-class msgNode{
+class MsgNode {
     public int msgType;
     public String msg;
 }
-class botNode{
+class BotNode {
     String botname;
     String botID;
-    botNode(String name,String id){
+    BotNode(String name, String id){
         this.botname = name;
         this.botID = id;
     }
 }
-class botSet{
-    final botNode HPNode = new botNode("@Harry Potter","<@U7HQ4QJR2>");;
-    botNode[] botMap;
-    botSet(){
-        this.botMap = new botNode[2];
-        this.botMap[0] = new botNode("@Dudley Dursley","<@U7JL8RLEQ>");
-        this.botMap[1] = new botNode("@Aunt Petunia","<@U7JK660E6>");
+class BotSet {
+    final BotNode HPNode = new BotNode("@Harry Potter","<@U7HQ4QJR2>");;
+    BotNode[] botMap;
+    BotSet(){
+        this.botMap = new BotNode[2];
+        this.botMap[0] = new BotNode("@Dudley Dursley","<@U7JL8RLEQ>");
+        this.botMap[1] = new BotNode("@Aunt Petunia","<@U7JK660E6>");
     }
 }
-public class msgHandler extends AsyncTask<String, String, String>{
+public class MsgHandler extends AsyncTask<String, String, String>{
     private Thread t;
     public final int port = 3535;
-    public layerView lv;
+    public LayerView lv;
     public String dstAddress;
     public int dstPort;
-    public botSet bs;
+    public BotSet bs;
     public boolean isMsgDone = false;
     public String retMsg;
 
-    public msgHandler(layerView lv) throws Exception {
+    public MsgHandler(LayerView lv) throws Exception {
         this.lv = lv;
         this.dstAddress = "35.203.167.236";
         this.dstPort = 9999;
-        this.bs = new botSet();
+        this.bs = new BotSet();
     }
     public String retMsg() {
         return this.retMsg;
@@ -158,7 +153,7 @@ public class msgHandler extends AsyncTask<String, String, String>{
         Log.i("AsyncTask", "onPostExecute: Start");
         if (str != null && str.length() > 0) {
             //msgEx(s);
-            msgHandler mhl;
+            MsgHandler mhl;
             try {
                 for (int i = 0; i < bs.botMap.length; i++) {
                     String s;
@@ -170,7 +165,7 @@ public class msgHandler extends AsyncTask<String, String, String>{
                 }
                 if(is_sendOut) {//Msg to Bots
                     lv.msgUpdate(ret,Msg.TypeReceived);
-                    mhl = new msgHandler(this.lv);
+                    mhl = new MsgHandler(this.lv);
                     mhl.execute(ret);
                 }
                 else{//Msg to HP

@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 
 
-public class Main_Chat_Activity extends AppCompatActivity {
+public class MainChatActivity extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
