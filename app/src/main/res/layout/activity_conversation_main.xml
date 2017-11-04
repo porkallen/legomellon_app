@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -20,18 +21,22 @@
 
         <AutoCompleteTextView
             android:id="@+id/autoText"
+            style="@android:style/Widget.AutoCompleteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:ems="15"
             android:completionThreshold="1"
-            android:hint="Try to @someone"/>
+            android:ems="15"
+            android:hint="  Try to @someone" />
+
         <Button
             android:id="@+id/send"
+            style="@android:style/Widget.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send" />
+
 
     </LinearLayout>
 
