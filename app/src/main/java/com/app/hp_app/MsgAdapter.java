@@ -1,4 +1,4 @@
-package com.example.allen.hp_app;
+package com.app.hp_app;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.File;
+import com.app.hp_app.hp_app.R;
+
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
 
 
         if( msg.getType() == Msg.TypeReceived) {
-            Uri uri = Uri.parse("android.resource://com.example.allen.hp_app/drawable/bob.png");
+            Uri uri = Uri.parse("android.resource://com.app.hp_app.hp_app/drawable/bob.png");
             viewHolder.left_img.setImageURI(uri);
 
             viewHolder.LeftLayout.setVisibility(view.VISIBLE);

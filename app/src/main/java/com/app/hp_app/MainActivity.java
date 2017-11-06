@@ -1,4 +1,4 @@
-package com.example.allen.hp_app;
+package com.app.hp_app;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +15,12 @@ import android.view.LayoutInflater;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
-import android.widget.LinearLayout;
 import 	android.widget.AutoCompleteTextView;
 import java.util.Map;
 import android.widget.ArrayAdapter;
+
+import com.app.hp_app.hp_app.R;
+
 import java.util.HashMap;
 import 	java.util.Arrays;
 
@@ -32,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private Button sent;
     private MsgAdapter msgAdapter;
     private List<Msg> msgList = new ArrayList<Msg>();
-    private layerView lv;
-    private msgHandler mhl;
+    private LayerView lv;
+    private BotMsgHandl mhl;
     private AutoCompleteTextView autocompleteView;
 
     public void IntroSetup() {
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         int delayStart = 3000;
         int dur = 3000;
         /*View set*/
-        int introViewIDSet[] = {R.layout.activity_welcome_page,R.layout.activity_conversation_main,R.layout.activity_tab_view};
+        int introViewIDSet[] = {R.layout.activity_welcome_page, R.layout.activity_conversation_main};
         for(int i = 0; i< introViewIDSet.length; i++){
             AlphaAnimation tmpAnim;
             View introView = inflater.inflate(introViewIDSet[i], null);
@@ -81,16 +83,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         IntroSetup();
-
         msgAdapter = new MsgAdapter( MainActivity.this, R.layout.item_msg_bubble, msgList);
         //input = (EditText)findViewById(R.id.input_text);
         sent = (Button) findViewById(R.id.send);
         msgListView = (ListView) findViewById(R.id.msg_list_view);
         msgListView.setAdapter(msgAdapter);
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.autoText);
-        lv = new layerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
+        lv = new LayerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
         //mhl.start();
-
 
         int layoutItemId = android.R.layout.simple_dropdown_item_1line;
         String[] botName = getResources().getStringArray(R.array.botName);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 String msgContent = autocompleteView.getText().toString();
                 if (!"".equals(msgContent)){
                     try {
-                        mhl = new msgHandler(lv);
+                        mhl = new BotMsgHandl(lv);
                         mhl.execute(msgContent);
                     } catch (Exception e) {
                         lv.msgUpdate("Socket Failed ", Msg.TypeSent);

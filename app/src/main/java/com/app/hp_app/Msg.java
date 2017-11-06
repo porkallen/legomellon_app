@@ -1,4 +1,4 @@
-package com.example.allen.hp_app;
+package com.app.hp_app;
 
 /**
  * Created by Lan on 10/22/17.

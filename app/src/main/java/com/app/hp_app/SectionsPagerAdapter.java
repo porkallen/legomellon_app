@@ -1,4 +1,4 @@
-package com.example.allen.hp_app;
+package com.app.hp_app;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;

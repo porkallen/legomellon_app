@@ -1,4 +1,4 @@
-package com.example.allen.hp_app;
+package com.app.hp_app;
 
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,13 +13,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.app.hp_app.hp_app.R;
 
 
 public class Main_Chat_Activity extends AppCompatActivity {
@@ -91,8 +89,8 @@ public class Main_Chat_Activity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new subPage1_Chats(), "CHATS");
-        adapter.addFragment(new subPage2_Chapters(), "CHAPTERS");
+        adapter.addFragment(new SubPage1_Chats(), "CHATS");
+        adapter.addFragment(new SubPage2_Chapters(), "CHAPTERS");
         viewPager.setAdapter(adapter);
     }
 

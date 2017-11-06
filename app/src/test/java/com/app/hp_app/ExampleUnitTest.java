@@ -1,4 +1,4 @@
-package com.example.allen.hp_app;
+package com.app.hp_app.hp_app;
 
 import org.junit.Test;
 
