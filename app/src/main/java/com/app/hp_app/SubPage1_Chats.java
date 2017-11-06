@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.app.hp_app.hp_app.R;
+import com.app.hp_app.R;
 
 
 public class SubPage1_Chats extends Fragment {

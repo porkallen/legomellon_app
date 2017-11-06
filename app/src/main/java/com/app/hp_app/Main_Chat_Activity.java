@@ -17,7 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.app.hp_app.hp_app.R;
+import com.app.hp_app.R;
 
 
 public class Main_Chat_Activity extends AppCompatActivity {

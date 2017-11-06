@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.app.hp_app.hp_app.R;
+import com.app.hp_app.R;
 
 import java.util.List;
 
@@ -54,7 +54,6 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         if( msg.getType() == Msg.TypeReceived) {
             Uri uri = Uri.parse("android.resource://com.app.hp_app.hp_app/drawable/bob.png");
             viewHolder.left_img.setImageURI(uri);
-
             viewHolder.LeftLayout.setVisibility(view.VISIBLE);
             viewHolder.left_img.setVisibility(view.VISIBLE);
             viewHolder.RightLayout.setVisibility(view.GONE);

@@ -19,7 +19,7 @@ import 	android.widget.AutoCompleteTextView;
 import java.util.Map;
 import android.widget.ArrayAdapter;
 
-import com.app.hp_app.hp_app.R;
+import com.app.hp_app.R;
 
 import java.util.HashMap;
 import 	java.util.Arrays;

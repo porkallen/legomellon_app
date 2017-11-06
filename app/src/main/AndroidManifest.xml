@@ -13,19 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+    <activity android:name=".MainActivity"
+        android:windowSoftInputMode="adjustResize|stateHidden">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
 
-        <activity
-            android:name=".Main_Chat_Activity"
-            android:label="@string/title_activity_main__chat_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+    <activity
+        android:name=".MainChatActivity"
+        android:label="CHAT"
+        android:screenOrientation="portrait">
+    </activity>
     </application>
 
 </manifest>
+
