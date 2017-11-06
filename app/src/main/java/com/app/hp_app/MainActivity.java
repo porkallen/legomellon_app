@@ -19,8 +19,6 @@ import 	android.widget.AutoCompleteTextView;
 import java.util.Map;
 import android.widget.ArrayAdapter;
 
-import com.app.hp_app.R;
-
 import java.util.HashMap;
 import 	java.util.Arrays;
 
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private BotMsgHandl mhl;
     private AutoCompleteTextView autocompleteView;
 
-    public void IntroSetup() {
+    public void introViewSetup() {
         /*Animation Usage*/
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LayoutParams default_layout_params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -82,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        IntroSetup();
+        introViewSetup();
         msgAdapter = new MsgAdapter( MainActivity.this, R.layout.item_msg_bubble, msgList);
         //input = (EditText)findViewById(R.id.input_text);
         sent = (Button) findViewById(R.id.send);
@@ -93,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
         //mhl.start();
 
         int layoutItemId = android.R.layout.simple_dropdown_item_1line;
-        String[] botName = getResources().getStringArray(R.array.botName);
-        List<String> botList = Arrays.asList(botName);
+        List<String> botList = Arrays.asList(BotNameList.botName);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, layoutItemId, botList);
         autocompleteView.setAdapter(adapter);
 
@@ -108,11 +105,9 @@ public class MainActivity extends AppCompatActivity {
                         mhl = new BotMsgHandl(lv);
                         mhl.execute(msgContent);
                     } catch (Exception e) {
-                        lv.msgUpdate("Socket Failed ", Msg.TypeSent);
                         String stackTrace = Log.getStackTraceString(e);
-                        lv.msgUpdate(stackTrace, Msg.TypeSent);
                     }
-                    lv.msgUpdate(msgContent,Msg.TypeSent);
+                    lv.updateLVMsg(msgContent,Msg.TypeSent,0);
                 }
             }
 

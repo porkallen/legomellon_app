@@ -19,26 +19,36 @@ class MsgNode {
     public int msgType;
     public String msg;
 }
+
+class BOT_SERV {
+    public static final String BOT_SERV_IP="35.203.167.236";
+    public static final int BOT_SERV_PORT=9999;
+    public static final int BOT_HANDL_PORT=3535;
+}
 class BotNode {
     String botname;
     String botID;
-    BotNode(String name, String id){
+    int botPort;
+    BotNode(String name, String id, int port){
         this.botname = name;
         this.botID = id;
+        this.botPort = port;
     }
 }
 class BotSet {
-    final BotNode HPNode = new BotNode("@Harry Potter","<@U7HQ4QJR2>");;
+    final BotNode HPNode = new BotNode("@Harry Potter ","<@U7HQ4QJR2>",0);;
     BotNode[] botMap;
     BotSet(){
-        this.botMap = new BotNode[2];
-        this.botMap[0] = new BotNode("@Dudley Dursley","<@U7JL8RLEQ>");
-        this.botMap[1] = new BotNode("@Aunt Petunia","<@U7JK660E6>");
+        this.botMap = new BotNode[BotNameList.botName.length];
+        this.botMap[0] = new BotNode(BotNameList.botName[0],"<@U7JL8RLEQ>",60001);
+        this.botMap[1] = new BotNode(BotNameList.botName[1],"<@U7JK660E6>",60002);
+        this.botMap[2] = new BotNode(BotNameList.botName[2],"<@U7N6MU4AC>",60003);
+        this.botMap[3] = new BotNode(BotNameList.botName[3],"<@U7NA7RWC9>",60004);
     }
 }
 public class BotMsgHandl extends AsyncTask<String, String, String>{
     private Thread t;
-    public final int port = 3535;
+    public final int port = BOT_SERV.BOT_HANDL_PORT;
     public LayerView lv;
     public String dstAddress;
     public int dstPort;
@@ -48,12 +58,13 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
 
     public BotMsgHandl(LayerView lv) throws Exception {
         this.lv = lv;
-        this.dstAddress = "35.203.167.236";
-        this.dstPort = 9999;
+        this.dstAddress = BOT_SERV.BOT_SERV_IP;
+        this.dstPort = BOT_SERV.BOT_SERV_PORT;
         this.bs = new BotSet();
     }
-    public String retMsg() {
-        return this.retMsg;
+    public String[] parseBotMsg(String str) {
+        String[] strPool = str.split("@#");
+        return strPool;
     }
     public boolean isMsgDone() {
         return this.isMsgDone;
@@ -140,7 +151,7 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
         if (values != null && values.length > 0) {
             //Your View attribute object in the activity
             // already initialized in the onCreate!
-            //lv.msgUpdate(values[0],Msg.TypeReceived);
+            //lv.updateLVMsg(values[0],Msg.TypeReceived);
         }
         onPostExecute(values[0]);
         //msgEx(values[0]);
@@ -164,7 +175,8 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                     }
                 }
                 if(is_sendOut) {//Msg to Bots
-                    lv.msgUpdate(ret,Msg.TypeReceived);
+                    String[] tmpStr = parseBotMsg(ret);
+                    lv.updateLVMsg(tmpStr[0],Msg.TypeReceived,Integer.parseInt(tmpStr[1]));
                     mhl = new BotMsgHandl(this.lv);
                     mhl.execute(ret);
                 }
@@ -172,7 +184,7 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                     if((msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname)) != null){
                         ret = msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname);
                     }
-                    lv.msgUpdate(ret,Msg.TypeReceived);
+                    lv.updateLVMsg(ret,Msg.TypeReceived,0);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

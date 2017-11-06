@@ -25,8 +25,8 @@ public class LayerView {
         this.msgList = msgList;
     }
 
-    public void msgUpdate(String msgContent,int typeSent){
-        Msg msg = new Msg(msgContent, typeSent);
+    public void updateLVMsg(String msgContent, int typeSent , int id){
+        Msg msg = new Msg(msgContent, typeSent,id);
         msgList.add(msg);
         msgAdapter.notifyDataSetChanged();
         msgListView.setSelection(msgList.size());
