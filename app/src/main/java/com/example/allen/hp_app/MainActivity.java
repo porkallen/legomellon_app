@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
          /** This is the function that link main activity and conversation page , can set get chapter later*/
         public void getChapter(View view) {
-            Intent intent = new Intent(this, ConversationActivity.class);
-            startActivity(intent);
+           Intent intent = new Intent(this, ConversationActivity.class);
+           startActivity(intent);
     }
 }

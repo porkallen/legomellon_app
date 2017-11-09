@@ -62,7 +62,7 @@ public class ConversationActivity extends AppCompatActivity {
 
 
         //test log
-        System.out.print("oncreate conversation activity");
+        //System.out.print("oncreate conversation activity");
 
         msgAdapter = new MsgAdapter( this, R.layout.item_msg_bubble, msgList);
         //input = (EditText)findViewById(R.id.input_text);
@@ -86,7 +86,7 @@ public class ConversationActivity extends AppCompatActivity {
         sent.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //String msgContent = input.getText().toString();
+                //String msgContent = input.getText().toString();import android.support.v7.app.
                 String msgContent = autocompleteView.getText().toString();
                 if (!"".equals(msgContent)){
                     try {

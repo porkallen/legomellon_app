@@ -1,4 +1,5 @@
 package com.example.allen.hp_app;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by allen on 10/2/2017.
