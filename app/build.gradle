@@ -10,7 +10,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.app.hp_app.hp_app"
+        applicationId "com.app.hp_app"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1

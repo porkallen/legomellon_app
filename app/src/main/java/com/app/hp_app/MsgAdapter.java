@@ -52,8 +52,10 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
 
 
         if( msg.getType() == Msg.TypeReceived) {
-            Uri uri = Uri.parse("android.resource://com.app.hp_app.hp_app/drawable/bob.png");
-            viewHolder.left_img.setImageURI(uri);
+            int msgId = R.drawable.left_avatar;
+            if(msg.getImgId() != 0)
+                msgId = msg.getImgId();
+            viewHolder.left_img.setImageResource(msg.getImgId());
             viewHolder.LeftLayout.setVisibility(view.VISIBLE);
             viewHolder.left_img.setVisibility(view.VISIBLE);
             viewHolder.RightLayout.setVisibility(view.GONE);

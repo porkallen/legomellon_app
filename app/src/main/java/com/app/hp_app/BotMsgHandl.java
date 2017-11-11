@@ -29,21 +29,23 @@ class BotNode {
     String botname;
     String botID;
     int botPort;
-    BotNode(String name, String id, int port){
+    int imgId;
+    BotNode(String name, String id, int port, int imgId){
         this.botname = name;
         this.botID = id;
         this.botPort = port;
+        this.imgId = imgId;
     }
 }
 class BotSet {
-    final BotNode HPNode = new BotNode("@Harry Potter ","<@U7HQ4QJR2>",0);;
+    final BotNode HPNode = new BotNode("@Harry Potter ","<@U7HQ4QJR2>",0,0);;
     BotNode[] botMap;
     BotSet(){
         this.botMap = new BotNode[BotNameList.botName.length];
-        this.botMap[0] = new BotNode(BotNameList.botName[0],"<@U7JL8RLEQ>",60001);
-        this.botMap[1] = new BotNode(BotNameList.botName[1],"<@U7JK660E6>",60002);
-        this.botMap[2] = new BotNode(BotNameList.botName[2],"<@U7N6MU4AC>",60003);
-        this.botMap[3] = new BotNode(BotNameList.botName[3],"<@U7NA7RWC9>",60004);
+        this.botMap[0] = new BotNode(BotNameList.botName[0],"<@U7JL8RLEQ>",60001,R.drawable.dudley_dursley);
+        this.botMap[1] = new BotNode(BotNameList.botName[1],"<@U7JK660E6>",60002,R.drawable.aunt_petunia);
+        this.botMap[2] = new BotNode(BotNameList.botName[2],"<@U7N6MU4AC>",60003,R.drawable.bob);
+        this.botMap[3] = new BotNode(BotNameList.botName[3],"<@U7NA7RWC9>",60004,R.drawable.hogford);
     }
 }
 public class BotMsgHandl extends AsyncTask<String, String, String>{
@@ -175,8 +177,6 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                     }
                 }
                 if(is_sendOut) {//Msg to Bots
-                    String[] tmpStr = parseBotMsg(ret);
-                    lv.updateLVMsg(tmpStr[0],Msg.TypeReceived,Integer.parseInt(tmpStr[1]));
                     mhl = new BotMsgHandl(this.lv);
                     mhl.execute(ret);
                 }
@@ -184,8 +184,18 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                     if((msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname)) != null){
                         ret = msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname);
                     }
-                    lv.updateLVMsg(ret,Msg.TypeReceived,0);
                 }
+                String[] tmpStr = parseBotMsg(ret);
+                int imgId = 0;
+                if(tmpStr[0] != null && tmpStr[1] != null){
+                    for(int i = 0; i< bs.botMap.length;i++){
+                        if(Integer.parseInt(tmpStr[1]) == bs.botMap[i].botPort){
+                            imgId = bs.botMap[i].imgId;
+                            break;
+                        }
+                    }
+                }
+                lv.updateLVMsg(tmpStr[0],Msg.TypeReceived,imgId);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.i("AsyncTask", "onPostExecute: Exception");

@@ -1,5 +1,6 @@
 package com.app.hp_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,19 +23,12 @@ import android.widget.ArrayAdapter;
 import java.util.HashMap;
 import 	java.util.Arrays;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 /**
  * Created by Lan on 10/22/17.
  */
 public class MainActivity extends AppCompatActivity {
-
-    private ListView msgListView;
-    private EditText input;
-    private Button sent;
-    private MsgAdapter msgAdapter;
-    private List<Msg> msgList = new ArrayList<Msg>();
-    private LayerView lv;
-    private BotMsgHandl mhl;
-    private AutoCompleteTextView autocompleteView;
 
     public void introViewSetup() {
         /*Animation Usage*/
@@ -43,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         int delayStart = 3000;
         int dur = 3000;
         /*View set*/
-        int introViewIDSet[] = {R.layout.activity_welcome_page, R.layout.activity_conversation_main};
+        int introViewIDSet[] = {R.layout.activity_welcome_page, R.layout.activity_main};
         for(int i = 0; i< introViewIDSet.length; i++){
             AlphaAnimation tmpAnim;
             View introView = inflater.inflate(introViewIDSet[i], null);
@@ -72,48 +66,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void PopulatePeopleList(ArrayList<Map<String, String>> mPeopleList) {
-        mPeopleList.clear();
-        Map<String, String> NamePhoneType = new HashMap<String, String>();
-    }
-
     @Override
-    protected void onCreate (Bundle savedInstanceState){
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         introViewSetup();
-        msgAdapter = new MsgAdapter( MainActivity.this, R.layout.item_msg_bubble, msgList);
-        //input = (EditText)findViewById(R.id.input_text);
-        sent = (Button) findViewById(R.id.send);
-        msgListView = (ListView) findViewById(R.id.msg_list_view);
-        msgListView.setAdapter(msgAdapter);
-        autocompleteView = (AutoCompleteTextView) findViewById(R.id.autoText);
-        lv = new LayerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
-        //mhl.start();
-
-        int layoutItemId = android.R.layout.simple_dropdown_item_1line;
-        List<String> botList = Arrays.asList(BotNameList.botName);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, layoutItemId, botList);
-        autocompleteView.setAdapter(adapter);
-
-        sent.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //String msgContent = input.getText().toString();
-                String msgContent = autocompleteView.getText().toString();
-                if (!"".equals(msgContent)){
-                    try {
-                        mhl = new BotMsgHandl(lv);
-                        mhl.execute(msgContent);
-                    } catch (Exception e) {
-                        String stackTrace = Log.getStackTraceString(e);
-                    }
-                    lv.updateLVMsg(msgContent,Msg.TypeSent,0);
-                }
-            }
-
-        });
-
     }
+    /** Called when the user taps the Send button */
+    /** This is only for test*/
+    public void sendMessage(View view) {
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String message = editText.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+    }
+    /** This is the function that link main activity and conversation page , can set get chapter later*/
+    public void getChapter(View view) {
+        Intent intent = new Intent(this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
 
 
 }

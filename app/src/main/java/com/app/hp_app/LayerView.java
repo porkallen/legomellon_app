@@ -1,9 +1,13 @@
 package com.app.hp_app;
 
+import android.util.Log;
 import android.widget.AutoCompleteTextView;
+//import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +22,7 @@ public class LayerView {
     private List<Msg> msgList;
 
     public LayerView(MsgAdapter msgAdapter, AutoCompleteTextView input, Button sent, ListView msgListView, List<Msg> msgList) {
+        //Log.i("LayerView","Test");
         this.msgAdapter = msgAdapter;
         this.input = input;
         this.sent = sent;

@@ -87,5 +87,8 @@
     <string name="app_name_in_about">CMU Project</string>
     <string name="function_introduction">Function Intro</string>
     <string name="terms_of_use_and_privacy_policy">Terms and Terminology</string>
+    <string name="button">Button</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
 
 </resources>

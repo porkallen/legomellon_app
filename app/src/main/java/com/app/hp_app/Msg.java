@@ -8,14 +8,14 @@ public class Msg {
 
     public static final int TypeReceived = 0;
     public static final int TypeSent = 1;
-    private int id;
+    private int imgId;
     private String messageContent;
     private int type;
 
-    public Msg (String messageContent, int type, int id){
+    public Msg (String messageContent, int type, int imgId){
         this.messageContent = messageContent;
         this.type = type;
-        this.id = id;
+        this.imgId = imgId;
     }
     public String getMessage(){
         return messageContent;
@@ -23,7 +23,7 @@ public class Msg {
     public int getType(){
         return type;
     }
-    public int getID(){
-        return this.id;
+    public int getImgId(){
+        return this.imgId;
     }
 }
