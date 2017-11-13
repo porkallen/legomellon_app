@@ -7,7 +7,7 @@
 
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:src="@drawable/welcome1"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitXY"/>
 </LinearLayout>

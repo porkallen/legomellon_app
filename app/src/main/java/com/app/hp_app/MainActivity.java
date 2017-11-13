@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -29,7 +31,7 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
  * Created by Lan on 10/22/17.
  */
 public class MainActivity extends AppCompatActivity {
-
+    static boolean one_shot = false;
     public void introViewSetup() {
         /*Animation Usage*/
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -69,16 +71,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        introViewSetup();
-    }
-    /** Called when the user taps the Send button */
-    /** This is only for test*/
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        if(one_shot == false) {
+            introViewSetup();
+            one_shot = true;
+        }
+        else{
+            setContentView(R.layout.activity_main);
+        }
     }
     /** This is the function that link main activity and conversation page , can set get chapter later*/
     public void getChapter(View view) {
