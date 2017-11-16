@@ -16,8 +16,16 @@ import android.util.Log;
 import android.os.AsyncTask;
 
 class MsgNode {
+    public static final int MSG_TYPE_TXT = 0;
+    public static final int MSG_TYPE_HINT = 1;
+    public int msgTo;
+    public byte[] msg;
     public int msgType;
-    public String msg;
+    MsgNode(int msgTo,byte[] msg, int type){
+        this.msgTo = msgTo;
+        this.msgType = msgType;
+        this.msg = msg;
+    }
 }
 
 class BOT_SERV {
@@ -50,18 +58,16 @@ class BotSet {
 }
 public class BotMsgHandl extends AsyncTask<String, String, String>{
     private Thread t;
-    public final int port = BOT_SERV.BOT_HANDL_PORT;
+    public final int listenPort = BOT_SERV.BOT_HANDL_PORT;
+    public final String dstAddress = BOT_SERV.BOT_SERV_IP;
+    public final int dstPort = BOT_SERV.BOT_SERV_PORT;;
     public LayerView lv;
-    public String dstAddress;
-    public int dstPort;
     public BotSet bs;
     public boolean isMsgDone = false;
     public String retMsg;
 
     public BotMsgHandl(LayerView lv) throws Exception {
         this.lv = lv;
-        this.dstAddress = BOT_SERV.BOT_SERV_IP;
-        this.dstPort = BOT_SERV.BOT_SERV_PORT;
         this.bs = new BotSet();
     }
     public String[] parseBotMsg(String str) {
@@ -83,12 +89,12 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
         Socket socket = new Socket();
         InputStream nis = null; //Network Input Stream
         OutputStream nos = null; //Network Output Stream
-        String ret = "";
+        String retStr = "";
 
         for (int i = 0; i < bs.botMap.length; i++) {
             String s;
             if ((s = msgReplace(str, bs.botMap[i].botname, bs.botMap[i].botID)) != null) {
-                ret = s;
+                retStr = s;
                 is_sendOut = true;
                 break;
             }
@@ -97,17 +103,21 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
             return;
         }
         try {
-            SocketAddress sockaddr = new InetSocketAddress("35.203.167.236", 9999);
+            SocketAddress sockaddr = new InetSocketAddress(  this.dstAddress, this.dstPort);
             //socket = new Socket();
             socket.connect(sockaddr, 5000); //10 second connection timeout
             if (socket.isConnected()) {
+                MsgNode msgTx;
                 byte[] buffer = new byte[1024];
                 int len = 0;
                 nis = socket.getInputStream();
                 nos = socket.getOutputStream();
                 Log.i("AsyncTask", "doInBackground: Socket created, streams assigned");
-                Log.i("AsyncTask", "Send Data: " + ret);
-                nos.write(ret.getBytes());
+                Log.i("AsyncTask", "Send Data: " + retStr);
+                msgTx.msgTo = BOT_SERV.BOT_SERV_PORT;
+                msgTx.msgType = MsgNode.MSG_TYPE_TXT;
+                msgTx.msg = retStr.getBytes();
+                nos.write(msgTx.);
                 BufferedReader in = new BufferedReader(new InputStreamReader(nis));
                 String line = in.readLine();
                 String line1 = "";
