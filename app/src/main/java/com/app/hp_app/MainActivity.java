@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
         }
     }
-    /** This is the function that link main activity and conversation page , can set get chapter later*/
+    /** This is the function that link main activity and conversation page , can set get gChapter later*/
     public void getChapter(View view) {
         Intent intent = new Intent(this, ConversationActivity.class);
         startActivity(intent);

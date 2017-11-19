@@ -15,15 +15,13 @@ import java.io.InputStreamReader;
 import android.util.Log;
 import android.os.AsyncTask;
 
-class MsgNode {
-    public static final int MSG_TYPE_TXT = 0;
-    public static final int MSG_TYPE_HINT = 1;
-    public int msgTo;
-    public byte[] msg;
+class BotMsgNode {
     public int msgType;
-    MsgNode(int msgTo,byte[] msg, int type){
-        this.msgTo = msgTo;
+    public int msgTo;
+    public String msg;
+    BotMsgNode(int msgType,int msgTo,String msg){
         this.msgType = msgType;
+        this.msgTo = msgTo;
         this.msg = msg;
     }
 }
@@ -32,6 +30,52 @@ class BOT_SERV {
     public static final String BOT_SERV_IP="35.203.167.236";
     public static final int BOT_SERV_PORT=9999;
     public static final int BOT_HANDL_PORT=3535;
+    public static final int BOT_MSG_TYPE_TXT = 0;
+    public static final int BOT_MSG_TYPE_HINT = 1;
+    public static final int BOT_MSG_IDX_MSG = 0;
+    public static final int BOT_MSG_IDX_MSG_TYPE = 1;
+    public static final int BOT_MSG_IDX_MSGTO = 2;
+    public static final int BOT_MSG_IDX_CHAP = 3;
+    public static final int BOT_MSG_IDX_MS = 4;
+    public static final String BOT_SPLIT_IND = "!@#";
+    public static int gChapter = 0;
+    public static int gMilestone = 0;
+    public static BotMsgNode parseBotMsg(String str) {
+        /*
+         *  Data Format:
+         *  0: <Text MSg>
+         *  1: <Msg Type>
+         *  2: <Port>
+         *  3: <Chapter>
+         *  4: <MileStone>
+         *
+         */
+        BotMsgNode botMsgNode;
+        String[] strPool = str.split(BOT_SPLIT_IND,6);
+        botMsgNode = new BotMsgNode(Integer.getInteger(strPool[BOT_MSG_IDX_MSG_TYPE]),
+                Integer.getInteger(strPool[BOT_MSG_IDX_MSGTO]),strPool[BOT_MSG_IDX_MSG]);
+        gChapter = Integer.getInteger(strPool[BOT_MSG_IDX_CHAP]);
+        gMilestone = Integer.getInteger(strPool[BOT_MSG_IDX_MS]);
+        return botMsgNode;
+    }
+    public static String formatBotMsg(BotMsgNode node) {
+        /*
+         *  Data Format:
+         *  0: <Text MSg>
+         *  1: <Msg Type>
+         *  2: <Port>
+         *  3: <Chapter>
+         *  4: <MileStone>
+         *
+         */
+        String strPool[] = {node.msg,Integer.toString(node.msgType),Integer.toString(node.msgTo),
+                Integer.toString(gChapter),Integer.toString(gMilestone)};
+        String retStr = "";
+        for(int i = 0 ; i < strPool.length - 1 ; i++)
+            retStr += strPool[i] + BOT_SPLIT_IND;
+        retStr += strPool[strPool.length - 1];
+        return retStr;
+    }
 }
 class BotNode {
     String botname;
@@ -58,9 +102,7 @@ class BotSet {
 }
 public class BotMsgHandl extends AsyncTask<String, String, String>{
     private Thread t;
-    public final int listenPort = BOT_SERV.BOT_HANDL_PORT;
-    public final String dstAddress = BOT_SERV.BOT_SERV_IP;
-    public final int dstPort = BOT_SERV.BOT_SERV_PORT;;
+    public final int port = BOT_SERV.BOT_HANDL_PORT;
     public LayerView lv;
     public BotSet bs;
     public boolean isMsgDone = false;
@@ -70,10 +112,7 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
         this.lv = lv;
         this.bs = new BotSet();
     }
-    public String[] parseBotMsg(String str) {
-        String[] strPool = str.split("@#");
-        return strPool;
-    }
+
     public boolean isMsgDone() {
         return this.isMsgDone;
     }
@@ -89,12 +128,12 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
         Socket socket = new Socket();
         InputStream nis = null; //Network Input Stream
         OutputStream nos = null; //Network Output Stream
-        String retStr = "";
+        String ret = "";
 
         for (int i = 0; i < bs.botMap.length; i++) {
             String s;
             if ((s = msgReplace(str, bs.botMap[i].botname, bs.botMap[i].botID)) != null) {
-                retStr = s;
+                ret = s;
                 is_sendOut = true;
                 break;
             }
@@ -103,21 +142,23 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
             return;
         }
         try {
-            SocketAddress sockaddr = new InetSocketAddress(  this.dstAddress, this.dstPort);
+            SocketAddress sockaddr = new InetSocketAddress(BOT_SERV.BOT_SERV_IP, BOT_SERV.BOT_SERV_PORT);
             //socket = new Socket();
-            socket.connect(sockaddr, 5000); //10 second connection timeout
+            socket.connect(sockaddr, 5000); //5 second connection timeout
             if (socket.isConnected()) {
-                MsgNode msgTx;
                 byte[] buffer = new byte[1024];
+                BotMsgNode node = null;
+                String msgTx;
                 int len = 0;
                 nis = socket.getInputStream();
                 nos = socket.getOutputStream();
                 Log.i("AsyncTask", "doInBackground: Socket created, streams assigned");
-                Log.i("AsyncTask", "Send Data: " + retStr);
-                msgTx.msgTo = BOT_SERV.BOT_SERV_PORT;
-                msgTx.msgType = MsgNode.MSG_TYPE_TXT;
-                msgTx.msg = retStr.getBytes();
-                nos.write(msgTx.);
+                Log.i("AsyncTask", "Send Data: " + ret);
+                node.msgTo = BOT_SERV.BOT_SERV_PORT;
+                node.msgType = BOT_SERV.BOT_MSG_TYPE_TXT;
+                node.msg = ret;
+                msgTx = BOT_SERV.formatBotMsg(node);
+                nos.write(msgTx.getBytes());
                 BufferedReader in = new BufferedReader(new InputStreamReader(nis));
                 String line = in.readLine();
                 String line1 = "";
@@ -195,17 +236,15 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                         ret = msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname);
                     }
                 }
-                String[] tmpStr = parseBotMsg(ret);
+                BotMsgNode node = BOT_SERV.parseBotMsg(ret);
                 int imgId = 0;
-                if(tmpStr[0] != null && tmpStr[1] != null){
-                    for(int i = 0; i< bs.botMap.length;i++){
-                        if(Integer.parseInt(tmpStr[1]) == bs.botMap[i].botPort){
-                            imgId = bs.botMap[i].imgId;
-                            break;
-                        }
+                for(int i = 0; i< bs.botMap.length;i++){
+                    if(node.msgTo == bs.botMap[i].botPort){
+                        imgId = bs.botMap[i].imgId;
+                        break;
                     }
                 }
-                lv.updateLVMsg(tmpStr[0],Msg.TypeReceived,imgId);
+                lv.updateLVMsg(node.msg,Msg.TypeReceived,imgId);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.i("AsyncTask", "onPostExecute: Exception");

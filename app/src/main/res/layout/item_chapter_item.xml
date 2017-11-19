@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:background="@color/main_bg5">
 
-            <!-- chapter name -->
+            <gChapterpter name -->
 
             <LinearLayout
                 android:layout_width="wrap_content"
