@@ -18,8 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".main.MainActivity"
+            android:theme="@style/AppTheme">
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,19 +27,26 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity" >
+        <activity android:name=".converstation.DisplayMessageActivity"
+            android:parentActivityName=".main.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".main.MainActivity" />
         </activity>
-        <activity android:name=".ConversationActivity"
-            android:parentActivityName=".MainActivity" >
+        <activity android:name=".converstation.ConversationActivity"
+            android:parentActivityName=".chat_menu.CharMenuActivity">
+             <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".chat_menu.CharMenuActivity" />
+        </activity>
+        <activity android:name=".chat_menu.CharMenuActivity"
+            android:parentActivityName=".main.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".main.MainActivity" />
         </activity>
 
     </application>

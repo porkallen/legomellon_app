@@ -22,8 +22,6 @@
             android:orientation="vertical"
             android:background="@color/main_bg5">
 
-            <gChapterpter name -->
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/chapter1_number"
+                    android:text="CHAPTER 1"
                     android:textColor="#666666"
                     android:textSize="20sp"
                     android:visibility="visible"/>
@@ -89,6 +87,67 @@
                         android:src="@drawable/dudley_family" />
 
                 </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/chapter2_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="10dp"
+                    android:text="CHAPTER 2"
+                    android:textColor="#666666"
+                    android:textSize="20sp"
+                    android:visibility="visible"/>
+
+
+                <RelativeLayout
+                    android:layout_width="370dp"
+                    android:layout_height="80dp"
+                    android:background="@color/main_bg5">
+
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/chapter2_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/chapter2_name"
+                            android:textColor="@color/black1"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/character2_locked"
+                        android:layout_width="85px"
+                        android:layout_height="85px"
+                        android:layout_below="@+id/linearLayout2"
+                        android:layout_marginStart="11dp"
+                        android:layout_toEndOf="@+id/character2_unlocked"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/lock_fill" />
+
+                    <ImageView
+                        android:id="@+id/character2_unlocked"
+                        android:layout_width="85px"
+                        android:layout_height="85px"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/linearLayout2"
+                        android:layout_centerInParent="false"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/dudley_family" />
+
+                </RelativeLayout>
+
+
 
             </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.app.hp_app;
+package com.app.hp_app.bot_msg;
 
 /**
  * Created by allen on 10/2/2017.
@@ -15,6 +15,10 @@ import java.io.InputStreamReader;
 import android.util.Log;
 import android.os.AsyncTask;
 
+import com.app.hp_app.converstation.MsgLayerView;
+import com.app.hp_app.converstation.MsgNode;
+import com.app.hp_app.R;
+
 class BotMsgNode {
     public int msgType;
     public int msgTo;
@@ -29,7 +33,6 @@ class BotMsgNode {
 class BOT_SERV {
     public static final String BOT_SERV_IP="35.203.167.236";
     public static final int BOT_SERV_PORT=9999;
-    public static final int BOT_HANDL_PORT=3535;
     public static final int BOT_MSG_TYPE_TXT = 0;
     public static final int BOT_MSG_TYPE_HINT = 1;
     public static final int BOT_MSG_IDX_MSG = 0;
@@ -44,25 +47,29 @@ class BOT_SERV {
         /*
          *  Data Format:
          *  0: <Text MSg>
-         *  1: <Msg Type>
+         *  1: <MsgNode Type>
          *  2: <Port>
          *  3: <Chapter>
          *  4: <MileStone>
          *
          */
         BotMsgNode botMsgNode;
-        String[] strPool = str.split(BOT_SPLIT_IND,6);
-        botMsgNode = new BotMsgNode(Integer.getInteger(strPool[BOT_MSG_IDX_MSG_TYPE]),
-                Integer.getInteger(strPool[BOT_MSG_IDX_MSGTO]),strPool[BOT_MSG_IDX_MSG]);
-        gChapter = Integer.getInteger(strPool[BOT_MSG_IDX_CHAP]);
-        gMilestone = Integer.getInteger(strPool[BOT_MSG_IDX_MS]);
+        String[] strPool = str.split(BOT_SPLIT_IND,BOT_MSG_IDX_MS+2);
+        botMsgNode = new BotMsgNode(Integer.parseInt(strPool[BOT_MSG_IDX_MSG_TYPE]),
+                Integer.parseInt(strPool[BOT_MSG_IDX_MSGTO]),strPool[BOT_MSG_IDX_MSG]);
+        if(Integer.parseInt(strPool[BOT_MSG_IDX_CHAP])!= 0){
+            gChapter = Integer.parseInt(strPool[BOT_MSG_IDX_CHAP]);
+        }
+        if(Integer.parseInt(strPool[BOT_MSG_IDX_MS])!= 0){
+            gMilestone = Integer.parseInt(strPool[BOT_MSG_IDX_MS]);
+        }
         return botMsgNode;
     }
     public static String formatBotMsg(BotMsgNode node) {
         /*
          *  Data Format:
          *  0: <Text MSg>
-         *  1: <Msg Type>
+         *  1: <MsgNode Type>
          *  2: <Port>
          *  3: <Chapter>
          *  4: <MileStone>
@@ -94,7 +101,7 @@ class BotSet {
     BotNode[] botMap;
     BotSet(){
         this.botMap = new BotNode[BotNameList.botName.length];
-        this.botMap[0] = new BotNode(BotNameList.botName[0],"<@U7JL8RLEQ>",60001,R.drawable.dudley_dursley);
+        this.botMap[0] = new BotNode(BotNameList.botName[0],"<@U7JL8RLEQ>",60001, R.drawable.dudley_dursley);
         this.botMap[1] = new BotNode(BotNameList.botName[1],"<@U7JK660E6>",60002,R.drawable.aunt_petunia);
         this.botMap[2] = new BotNode(BotNameList.botName[2],"<@U7N6MU4AC>",60003,R.drawable.bob);
         this.botMap[3] = new BotNode(BotNameList.botName[3],"<@U7NA7RWC9>",60004,R.drawable.hogford);
@@ -102,13 +109,12 @@ class BotSet {
 }
 public class BotMsgHandl extends AsyncTask<String, String, String>{
     private Thread t;
-    public final int port = BOT_SERV.BOT_HANDL_PORT;
-    public LayerView lv;
+    public MsgLayerView lv;
     public BotSet bs;
     public boolean isMsgDone = false;
     public String retMsg;
 
-    public BotMsgHandl(LayerView lv) throws Exception {
+    public BotMsgHandl(MsgLayerView lv) throws Exception {
         this.lv = lv;
         this.bs = new BotSet();
     }
@@ -153,12 +159,11 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                 nis = socket.getInputStream();
                 nos = socket.getOutputStream();
                 Log.i("AsyncTask", "doInBackground: Socket created, streams assigned");
-                Log.i("AsyncTask", "Send Data: " + ret);
-                node.msgTo = BOT_SERV.BOT_SERV_PORT;
-                node.msgType = BOT_SERV.BOT_MSG_TYPE_TXT;
-                node.msg = ret;
+                node = new BotMsgNode(BOT_SERV.BOT_MSG_TYPE_TXT,BOT_SERV.BOT_SERV_PORT,ret);
                 msgTx = BOT_SERV.formatBotMsg(node);
+                Log.i("AsyncTask", "Send Data: " + msgTx);
                 nos.write(msgTx.getBytes());
+                nos.flush();
                 BufferedReader in = new BufferedReader(new InputStreamReader(nis));
                 String line = in.readLine();
                 String line1 = "";
@@ -204,7 +209,7 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
         if (values != null && values.length > 0) {
             //Your View attribute object in the activity
             // already initialized in the onCreate!
-            //lv.updateLVMsg(values[0],Msg.TypeReceived);
+            //lv.updateLVMsg(values[0],MsgNode.TypeReceived);
         }
         onPostExecute(values[0]);
         //msgEx(values[0]);
@@ -218,6 +223,7 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
         if (str != null && str.length() > 0) {
             //msgEx(s);
             BotMsgHandl mhl;
+            Log.i("AsyncTask", "MsgNode Recv: "+str);
             try {
                 for (int i = 0; i < bs.botMap.length; i++) {
                     String s;
@@ -227,11 +233,11 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                         break;
                     }
                 }
-                if(is_sendOut) {//Msg to Bots
+                if(is_sendOut) {//MsgNode to Bots
                     mhl = new BotMsgHandl(this.lv);
                     mhl.execute(ret);
                 }
-                else{//Msg to HP
+                else{//MsgNode to HP
                     if((msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname)) != null){
                         ret = msgReplace(ret, bs.HPNode.botID,bs.HPNode.botname);
                     }
@@ -244,7 +250,7 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                         break;
                     }
                 }
-                lv.updateLVMsg(node.msg,Msg.TypeReceived,imgId);
+                lv.updateLVMsg(node.msg, MsgNode.TypeReceived,imgId);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.i("AsyncTask", "onPostExecute: Exception");

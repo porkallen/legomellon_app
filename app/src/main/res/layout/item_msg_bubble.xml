@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <ImageView
             android:id="@+id/left_avarta"
             android:layout_width="wrap_content"

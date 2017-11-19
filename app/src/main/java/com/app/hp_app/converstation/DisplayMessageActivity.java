@@ -1,9 +1,11 @@
-package com.app.hp_app;
+package com.app.hp_app.converstation;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.app.hp_app.R;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -14,9 +16,6 @@ public class DisplayMessageActivity extends AppCompatActivity {
      *
      * this class is only used for learning to link to pages
      */
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

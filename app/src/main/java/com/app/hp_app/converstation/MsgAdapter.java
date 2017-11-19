@@ -1,7 +1,6 @@
-package com.app.hp_app;
+package com.app.hp_app.converstation;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +16,27 @@ import java.util.List;
 /**
  * Created by Lan on 10/22/17.
  */
+class ViewHolder{
+    LinearLayout LeftLayout;
+    LinearLayout RightLayout;
+    TextView Left_msg;
+    TextView Right_msg;
+    ImageView left_img;
+    ImageView Right_img;
+}
 
-public class MsgAdapter extends ArrayAdapter<Msg> {
+public class MsgAdapter extends ArrayAdapter<MsgNode> {
 
     private int resourceId;
 
-    public MsgAdapter(Context context, int textViewSourceId, List<Msg> objects){
+    public MsgAdapter(Context context, int textViewSourceId, List<MsgNode> objects){
 
         super(context,textViewSourceId,objects);
         resourceId = textViewSourceId;
     }
-
     public View getView(int position, View convertview, ViewGroup parent){
 
-        Msg msg = getItem(position);
+        MsgNode msg = getItem(position);
         View view;
         ViewHolder viewHolder;
 
@@ -51,7 +57,7 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         }
 
 
-        if( msg.getType() == Msg.TypeReceived) {
+        if( msg.getType() == MsgNode.TypeReceived) {
             int msgId = R.drawable.left_avatar;
             if(msg.getImgId() != 0)
                 msgId = msg.getImgId();
@@ -61,7 +67,7 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
             viewHolder.RightLayout.setVisibility(view.GONE);
             viewHolder.Right_img.setVisibility(view.GONE);
             viewHolder.Left_msg.setText(msg.getMessage());
-        }  else if (msg.getType() == Msg.TypeSent) {
+        }  else if (msg.getType() == MsgNode.TypeSent) {
             viewHolder.LeftLayout.setVisibility(view.GONE);
             viewHolder.left_img.setVisibility(view.GONE);
             viewHolder.RightLayout.setVisibility(view.VISIBLE);
@@ -70,16 +76,4 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         }
         return view;
     }
-
-    
-    class ViewHolder{
-        LinearLayout LeftLayout;
-        LinearLayout RightLayout;
-        TextView Left_msg;
-        TextView Right_msg;
-        ImageView left_img;
-        ImageView Right_img;
-
-    }
-
 }

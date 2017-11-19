@@ -1,31 +1,17 @@
-package com.app.hp_app;
+package com.app.hp_app.main;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import android.view.LayoutInflater;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
-import 	android.widget.AutoCompleteTextView;
-import java.util.Map;
-import android.widget.ArrayAdapter;
 
-import java.util.HashMap;
-import 	java.util.Arrays;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
+import com.app.hp_app.R;
+import com.app.hp_app.chat_menu.CharMenuActivity;
 
 /**
  * Created by Lan on 10/22/17.
@@ -81,10 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
     /** This is the function that link main activity and conversation page , can set get gChapter later*/
     public void getChapter(View view) {
-        Intent intent = new Intent(this, ConversationActivity.class);
+        Intent intent = new Intent(this, CharMenuActivity.class);
         startActivity(intent);
     }
-
-
-
 }

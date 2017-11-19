@@ -1,10 +1,10 @@
-package com.app.hp_app;
+package com.app.hp_app.converstation;
 
 /**
  * Created by Lan on 10/22/17.
  */
 
-public class Msg {
+public class MsgNode {
 
     public static final int TypeReceived = 0;
     public static final int TypeSent = 1;
@@ -12,7 +12,7 @@ public class Msg {
     private String messageContent;
     private int type;
 
-    public Msg (String messageContent, int type, int imgId){
+    public MsgNode(String messageContent, int type, int imgId){
         this.messageContent = messageContent;
         this.type = type;
         this.imgId = imgId;

@@ -1,28 +1,25 @@
-package com.app.hp_app;
+package com.app.hp_app.converstation;
 
-import android.util.Log;
 import android.widget.AutoCompleteTextView;
 //import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by allen on 10/23/2017.
  */
 
-public class LayerView {
+public class MsgLayerView {
     private ListView msgListView;
     private AutoCompleteTextView input;
     private Button sent;
     private MsgAdapter msgAdapter;
-    private List<Msg> msgList;
+    private List<MsgNode> msgList;
 
-    public LayerView(MsgAdapter msgAdapter, AutoCompleteTextView input, Button sent, ListView msgListView, List<Msg> msgList) {
-        //Log.i("LayerView","Test");
+    public MsgLayerView(MsgAdapter msgAdapter, AutoCompleteTextView input, Button sent, ListView msgListView, List<MsgNode> msgList) {
+        //Log.i("MsgLayerView","Test");
         this.msgAdapter = msgAdapter;
         this.input = input;
         this.sent = sent;
@@ -31,7 +28,7 @@ public class LayerView {
     }
 
     public void updateLVMsg(String msgContent, int typeSent , int id){
-        Msg msg = new Msg(msgContent, typeSent,id);
+        MsgNode msg = new MsgNode(msgContent, typeSent,id);
         msgList.add(msg);
         msgAdapter.notifyDataSetChanged();
         msgListView.setSelection(msgList.size());
