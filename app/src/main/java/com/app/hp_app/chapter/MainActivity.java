@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         /*Animation Usage*/
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LayoutParams default_layout_params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        int delayStart = 3000;
+        int delayStart = 6000;
         int dur = 3000;
         /*View set*/
         int introViewIDSet[] = {R.layout.animation_ch1_1,
@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
                     tmpPostVisable = View.VISIBLE;
                 }
             }
-            delayStart+=dur+1000;
-            dur += 1;
+            delayStart+=dur+3000;
+            dur += 1000;
             addContentView(introView, default_layout_params);
             introView.startAnimation(tmpAnim);
             introView.setVisibility(tmpPostVisable);
