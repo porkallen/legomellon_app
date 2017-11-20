@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -21,7 +22,7 @@
 
         <AutoCompleteTextView
             android:id="@+id/autoText"
-            style="@android:style/Widget.AutoCompleteTextView"
+            style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -33,9 +34,10 @@
         <Button
             android:id="@+id/send"
             style="@android:style/Widget.Button"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:text="Send" />
+            android:text="Send"
+            android:gravity="center"/>
 
 
     </LinearLayout>

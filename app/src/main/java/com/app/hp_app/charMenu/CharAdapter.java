@@ -1,4 +1,4 @@
-package com.app.hp_app.chat_menu;
+package com.app.hp_app.charMenu;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.app.hp_app.R;
 
 import java.util.List;
@@ -16,8 +17,9 @@ import java.util.List;
  * Created by allen on 11/19/2017.
  */
 class CharHolder{
-    LinearLayout LeftLayout;
-    LinearLayout RightLayout;
+    ImageView charPic;
+    TextView charName;
+    TextView charChatTime;
 }
 public class CharAdapter extends ArrayAdapter<CharNode> {
 
@@ -36,16 +38,17 @@ public class CharAdapter extends ArrayAdapter<CharNode> {
         if (convertview == null){
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
             charHolder = new CharHolder();
-            charHolder.LeftLayout =(LinearLayout) view. findViewById(R.id.left_layout) ;
-            charHolder.RightLayout = (LinearLayout)view.findViewById(R.id.right_layout);
+            charHolder.charPic =(ImageView) view.findViewById(R.id.charPic);
+            charHolder.charName = (TextView)view.findViewById(R.id.charName);
             view.setTag(charHolder);
         } else{
             view = convertview;
             charHolder = (CharHolder)view.getTag();
         }
         if( charNode.name.length() > 0) {
-            charHolder.LeftLayout.setVisibility(view.VISIBLE);
-            charHolder.RightLayout.setVisibility(view.GONE);
+            charHolder.charName.setText(charNode.name);
+            charHolder.charPic.setVisibility(view.VISIBLE);
+            charHolder.charName.setVisibility(view.VISIBLE);
         }
         return view;
     }

@@ -1,4 +1,4 @@
-package com.app.hp_app.bot_msg;
+package com.app.hp_app.botMsg;
 
 /**
  * Created by allen on 11/6/2017.

@@ -1,22 +1,29 @@
-package com.app.hp_app.main;
+package com.app.hp_app.chapter;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-
 import android.view.LayoutInflater;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
-
+import android.widget.AdapterView;
+import android.widget.ListView;
 import com.app.hp_app.R;
-import com.app.hp_app.chat_menu.CharMenuActivity;
+import com.app.hp_app.botMsg.BotMsgFormater;
+import com.app.hp_app.charMenu.CharMenuActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lan on 10/22/17.
  */
 public class MainActivity extends AppCompatActivity {
+    private List<ChapterNode> chapterList = new ArrayList<ChapterNode>();
+    private ListView chapterListView;
     static boolean one_shot = false;
     public void introViewSetup() {
         /*Animation Usage*/
@@ -25,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         int delayStart = 3000;
         int dur = 3000;
         /*View set*/
-        int introViewIDSet[] = {R.layout.activity_welcome_page, R.layout.activity_main};
+        int introViewIDSet[] = {R.layout.activity_welcome_page, R.layout.activity_chapter};
         for(int i = 0; i< introViewIDSet.length; i++){
             AlphaAnimation tmpAnim;
             View introView = inflater.inflate(introViewIDSet[i], null);
@@ -53,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             introView.setVisibility(tmpPostVisable);
         }
     }
-
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +68,28 @@ public class MainActivity extends AppCompatActivity {
             one_shot = true;
         }
         else{
-            setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_chapter);
         }
+        ChapterAdapter chapterAdapter = new ChapterAdapter( this, R.layout.item_chapter_bubble, chapterList);
+        chapterListView = (ListView) findViewById(R.id.chapterListView);
+        chapterListView.setAdapter(chapterAdapter);
+        ChapterLayerView chapterLv = new ChapterLayerView(chapterAdapter,chapterListView,chapterList);
+        chapterLv.updateLVChapter("Chapter 1","To be a Scientist");
+        chapterLv.updateLVChapter("Chapter 2", "To be a Rocker");
+        if(BotMsgFormater.gMilestone > 0){
+            chapterLv.updateLVChapter("Chapter 3", "To be a Rocker");
+        }
+        chapterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                Log.d("############","Items ");
+                getChapter(chapterListView);
+            }
+
+        });
     }
-    /** This is the function that link main activity and conversation page , can set get gChapter later*/
+    /** This is the function that link chapter activity and conversation page , can set get gChapter later*/
     public void getChapter(View view) {
         Intent intent = new Intent(this, CharMenuActivity.class);
         startActivity(intent);

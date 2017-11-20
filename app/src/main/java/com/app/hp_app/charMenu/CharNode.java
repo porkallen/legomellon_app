@@ -1,4 +1,4 @@
-package com.app.hp_app.chat_menu;
+package com.app.hp_app.charMenu;
 
 /**
  * Created by allen on 11/19/2017.

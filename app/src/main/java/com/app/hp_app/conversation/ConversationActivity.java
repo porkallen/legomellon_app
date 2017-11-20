@@ -1,12 +1,10 @@
-package com.app.hp_app.converstation;
+package com.app.hp_app.conversation;
 
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +16,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.app.hp_app.R;
-import com.app.hp_app.bot_msg.BotNameList;
-import com.app.hp_app.bot_msg.BotMsgHandl;
+import com.app.hp_app.botMsg.BotNameList;
+import com.app.hp_app.botMsg.BotMsgHandl;
 
 
 public class ConversationActivity extends AppCompatActivity {
@@ -36,7 +34,7 @@ public class ConversationActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_conversation_main);
+        setContentView(R.layout.activity_conversation);
 
         msgAdapter = new MsgAdapter( this, R.layout.item_msg_bubble, msgList);
         sent = (Button) findViewById(R.id.send);

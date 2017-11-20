@@ -1,4 +1,4 @@
-package com.app.hp_app.converstation;
+package com.app.hp_app.conversation;
 
 import android.widget.AutoCompleteTextView;
 //import android.support.v7.app.AppCompatActivity;
