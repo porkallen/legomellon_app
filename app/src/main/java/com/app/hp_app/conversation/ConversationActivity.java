@@ -16,8 +16,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.app.hp_app.R;
+import com.app.hp_app.botMsg.BotMsgFormater;
 import com.app.hp_app.botMsg.BotNameList;
 import com.app.hp_app.botMsg.BotMsgHandl;
+import com.app.hp_app.charMenu.CharPool;
 
 
 public class ConversationActivity extends AppCompatActivity {
@@ -35,6 +37,10 @@ public class ConversationActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
+        Bundle b = getIntent().getExtras();
+        int charIdx = -1; // or other values
+        if(b != null)
+            charIdx = b.getInt("pos");
 
         msgAdapter = new MsgAdapter( this, R.layout.item_msg_bubble, msgList);
         sent = (Button) findViewById(R.id.send);
@@ -43,7 +49,15 @@ public class ConversationActivity extends AppCompatActivity {
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.autoText);
         lv = new MsgLayerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
         int layoutItemId = android.R.layout.simple_dropdown_item_1line;
-        List<String> BotList = Arrays.asList(BotNameList.botName);
+        CharPool cPool = new CharPool();
+        List<String> BotList;
+        if(charIdx != (-1) && charIdx < cPool.charPool.get(BotMsgFormater.gChapter).size()) {
+            String[] list = cPool.charPool.get(BotMsgFormater.gChapter).get(charIdx).charSet;
+            BotList = Arrays.asList(list);
+        }
+        else {
+            BotList = Arrays.asList(BotNameList.botName);
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, layoutItemId, BotList);
         autocompleteView.setAdapter(adapter);
 

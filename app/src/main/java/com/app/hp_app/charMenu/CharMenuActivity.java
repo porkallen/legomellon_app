@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.hp_app.R;
+import com.app.hp_app.botMsg.BotMsgFormater;
 import com.app.hp_app.conversation.ConversationActivity;
 import com.app.hp_app.conversation.MsgLayerView;
 
@@ -31,20 +32,39 @@ public class CharMenuActivity extends AppCompatActivity {
         charListView = (ListView) findViewById(R.id.charListView);
         charListView.setAdapter(charAdapter);
         CharLayerView charLv = new CharLayerView(charAdapter,charListView,charList);
-        charLv.updateLVChar("Dudley");
-        charLv.updateLVChar("Petunia");
+        CharPool cPool = new CharPool();
+        if(true){
+            for(int i = 0; i < BotMsgFormater.gMilestone+1; i++){
+                if(BotMsgFormater.gChapter < cPool.charPool.size()){
+                    if(i < cPool.charPool.get(BotMsgFormater.gChapter).size()){
+                        charLv.updateLVChar(cPool.charPool.get(BotMsgFormater.gChapter).get(i).name,
+                                cPool.charPool.get(BotMsgFormater.gChapter).get(i).imgId);
+                    }
+                }
+            }
+        }
+        else{
+            charLv.updateLVChar("HIHI",0);
+        }
+
         charListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int position,
+                                    long id) {
                 // TODO Auto-generated method stub
-                Log.d("############","Items ");
-                getCharConversation(charListView);
+                //Log.d("############","Items "+position);
+                getCharConversation(position);
             }
 
         });
     }
-    public void getCharConversation(View view) {
+    public void getCharConversation(int pos) {
         Intent intent = new Intent(this,ConversationActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("pos", pos); //Your id
+        intent.putExtras(b); //Put your id to your next Intent
         startActivity(intent);
     }
 }

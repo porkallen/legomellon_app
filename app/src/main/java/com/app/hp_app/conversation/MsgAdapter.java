@@ -1,6 +1,7 @@
 package com.app.hp_app.conversation;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,9 +60,10 @@ public class MsgAdapter extends ArrayAdapter<MsgNode> {
 
         if( msg.getType() == MsgNode.TypeReceived) {
             int msgId = R.drawable.left_avatar;
-            if(msg.getImgId() != 0)
+            if(msg.getImgId() != 0) {
                 msgId = msg.getImgId();
-            viewHolder.left_img.setImageResource(msg.getImgId());
+            }
+            viewHolder.left_img.setImageResource(msgId);
             viewHolder.LeftLayout.setVisibility(view.VISIBLE);
             viewHolder.left_img.setVisibility(view.VISIBLE);
             viewHolder.RightLayout.setVisibility(view.GONE);

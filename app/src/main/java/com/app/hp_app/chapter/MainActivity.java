@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         int delayStart = 3000;
         int dur = 3000;
         /*View set*/
-        int introViewIDSet[] = {R.layout.activity_welcome_page, R.layout.activity_chapter};
+        int introViewIDSet[] = {R.layout.animation_ch1_1,
+                R.layout.animation_ch1_2,R.layout.animation_ch1_3,R.layout.activity_chapter};
         for(int i = 0; i< introViewIDSet.length; i++){
             AlphaAnimation tmpAnim;
             View introView = inflater.inflate(introViewIDSet[i], null);
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             delayStart+=dur+1000;
+            dur += 1;
             addContentView(introView, default_layout_params);
             introView.startAnimation(tmpAnim);
             introView.setVisibility(tmpPostVisable);
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate (Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if(one_shot == false) {
             introViewSetup();
@@ -74,10 +77,9 @@ public class MainActivity extends AppCompatActivity {
         chapterListView = (ListView) findViewById(R.id.chapterListView);
         chapterListView.setAdapter(chapterAdapter);
         ChapterLayerView chapterLv = new ChapterLayerView(chapterAdapter,chapterListView,chapterList);
-        chapterLv.updateLVChapter("Chapter 1","To be a Scientist");
-        chapterLv.updateLVChapter("Chapter 2", "To be a Rocker");
-        if(BotMsgFormater.gMilestone > 0){
-            chapterLv.updateLVChapter("Chapter 3", "To be a Rocker");
+        ChapterPool cPool = new ChapterPool();
+        for(int i = 0; i< BotMsgFormater.gChapter+1; i++){
+            chapterLv.updateLVChapter(cPool.chapterPool.get(i).get(0),cPool.chapterPool.get(i).get(1));
         }
         chapterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

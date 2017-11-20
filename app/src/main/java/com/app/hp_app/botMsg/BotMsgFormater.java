@@ -13,6 +13,7 @@ public class BotMsgFormater {
     public static final int BOT_MSG_IDX_MSGTO = 2;
     public static final int BOT_MSG_IDX_CHAP = 3;
     public static final int BOT_MSG_IDX_MS = 4;
+    public static final int BOT_MSG_IDX_MSGFROM = 5;
     public static final String BOT_SPLIT_IND = "!@#";
     public static int gChapter = 0;
     public static int gMilestone = 0;
@@ -27,9 +28,10 @@ public class BotMsgFormater {
          *
          */
         BotMsgNode botMsgNode;
-        String[] strPool = str.split(BOT_SPLIT_IND,BOT_MSG_IDX_MS+2);
+        String[] strPool = str.split(BOT_SPLIT_IND,BOT_MSG_IDX_MSGFROM+2);
         botMsgNode = new BotMsgNode(Integer.parseInt(strPool[BOT_MSG_IDX_MSG_TYPE]),
-                Integer.parseInt(strPool[BOT_MSG_IDX_MSGTO]),strPool[BOT_MSG_IDX_MSG]);
+                Integer.parseInt(strPool[BOT_MSG_IDX_MSGTO]),
+                Integer.parseInt(strPool[BOT_MSG_IDX_MSGFROM]),strPool[BOT_MSG_IDX_MSG]);
         if(Integer.parseInt(strPool[BOT_MSG_IDX_CHAP])!= 0){
             gChapter = Integer.parseInt(strPool[BOT_MSG_IDX_CHAP]);
         }
@@ -49,7 +51,7 @@ public class BotMsgFormater {
          *
          */
         String strPool[] = {node.msg,Integer.toString(node.msgType),Integer.toString(node.msgTo),
-                Integer.toString(gChapter),Integer.toString(gMilestone)};
+                Integer.toString(gChapter),Integer.toString(gMilestone),Integer.toString(node.msgFrom)};
         String retStr = "";
         for(int i = 0 ; i < strPool.length - 1 ; i++)
             retStr += strPool[i] + BOT_SPLIT_IND;

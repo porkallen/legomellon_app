@@ -45,6 +45,8 @@ class BotSet {
         this.botMap[1] = new BotNode(BotNameList.botName[1],"<@U7JK660E6>",60002,R.drawable.aunt_petunia);
         this.botMap[2] = new BotNode(BotNameList.botName[2],"<@U7N6MU4AC>",60003,R.drawable.bob);
         this.botMap[3] = new BotNode(BotNameList.botName[3],"<@U7NA7RWC9>",60004,R.drawable.hogford);
+        this.botMap[4] = new BotNode(BotNameList.botName[4],"<@U7NA7RW12>",60005,R.drawable.ollivander);
+        this.botMap[5] = new BotNode(BotNameList.botName[5],"<@U7NA7RW34>",60006,R.drawable.hagrid);
     }
 }
 public class BotMsgHandl extends AsyncTask<String, String, String>{
@@ -99,7 +101,7 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                 nis = socket.getInputStream();
                 nos = socket.getOutputStream();
                 Log.i("AsyncTask", "doInBackground: Socket created, streams assigned");
-                node = new BotMsgNode(BotMsgFormater.BOT_MSG_TYPE_TXT,BotServerInfor.BOT_SERV_PORT,ret);
+                node = new BotMsgNode(BotMsgFormater.BOT_MSG_TYPE_TXT,BotServerInfor.BOT_SERV_PORT,0,ret);
                 msgTx = BotMsgFormater.formatBotMsg(node);
                 Log.i("AsyncTask", "Send Data: " + msgTx);
                 nos.write(msgTx.getBytes());
@@ -184,8 +186,9 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                 }
                 BotMsgNode node = BotMsgFormater.parseBotMsg(ret);
                 int imgId = 0;
+
                 for(int i = 0; i< bs.botMap.length;i++){
-                    if(node.msgTo == bs.botMap[i].botPort){
+                    if(node.msgFrom == bs.botMap[i].botPort){
                         imgId = bs.botMap[i].imgId;
                         break;
                     }

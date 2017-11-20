@@ -6,8 +6,9 @@ package com.app.hp_app.charMenu;
 
 public class CharNode {
     public String name;
-
-    public CharNode(String name){
+    public int imgId;
+    public CharNode(String name, int imgId){
         this.name = name;
+        this.imgId = imgId;
     }
 }

@@ -29,15 +29,17 @@
             android:layout_centerHorizontal="true"
             android:completionThreshold="1"
             android:ems="15"
+            android:layout_gravity="left"
             android:hint="  Try to @someone" />
 
         <Button
             android:id="@+id/send"
             style="@android:style/Widget.Button"
             android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:text="Send"
-            android:gravity="center"/>
+            android:layout_height="match_parent"
+            android:layout_gravity="right|fill_horizontal"
+            android:layout_marginRight="10dp"
+            android:text="Send" />
 
 
     </LinearLayout>

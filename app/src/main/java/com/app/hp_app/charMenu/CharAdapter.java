@@ -19,7 +19,6 @@ import java.util.List;
 class CharHolder{
     ImageView charPic;
     TextView charName;
-    TextView charChatTime;
 }
 public class CharAdapter extends ArrayAdapter<CharNode> {
 
@@ -46,6 +45,11 @@ public class CharAdapter extends ArrayAdapter<CharNode> {
             charHolder = (CharHolder)view.getTag();
         }
         if( charNode.name.length() > 0) {
+            int msgId = R.drawable.left_avatar;
+            if(charNode.imgId != 0) {
+                msgId = charNode.imgId;
+            }
+            charHolder.charPic.setImageResource(msgId);
             charHolder.charName.setText(charNode.name);
             charHolder.charPic.setVisibility(view.VISIBLE);
             charHolder.charName.setVisibility(view.VISIBLE);

@@ -6,5 +6,5 @@ package com.app.hp_app.botMsg;
 
 public class BotNameList {
     static final public String[] botName = {"@Dudley Dursley ","@Aunt Petunia ",
-            "@Bob's Hair Cuts ","@Hogford "};
+            "@Bob's Hair Cuts ","@Hogford ","@Rubeus Hagrid ","@Mr. Ollivander "};
 }
