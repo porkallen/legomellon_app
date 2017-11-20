@@ -8,41 +8,40 @@
     android:animateLayoutChanges="true"
     android:id="@+id/convLayout">
 
-    <ListView
-        android:id="@+id/msg_list_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="#0000" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/convContext">
+        <ListView
+            android:id="@+id/msg_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:divider="#0000" />
 
         <AutoCompleteTextView
             android:id="@+id/autoText"
             style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="0"
             android:completionThreshold="1"
             android:ems="15"
-            android:layout_gravity="left"
             android:hint="  Try to @someone" />
 
         <Button
             android:id="@+id/send"
             style="@android:style/Widget.Button"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|fill_horizontal"
-            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_weight="0"
             android:text="Send" />
-
-
-    </LinearLayout>
-
-
+    </RelativeLayout>
 </LinearLayout>

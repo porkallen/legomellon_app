@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.app.hp_app.R;
 import com.app.hp_app.botMsg.BotMsgFormater;
+import com.app.hp_app.chapter.ChapterPool;
 import com.app.hp_app.conversation.ConversationActivity;
 import com.app.hp_app.conversation.MsgLayerView;
 
@@ -27,24 +28,18 @@ public class CharMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_character_selection);
         CharAdapter charAdapter = new CharAdapter( this, R.layout.item_char_bubble, charList);
         charListView = (ListView) findViewById(R.id.charListView);
         charListView.setAdapter(charAdapter);
         CharLayerView charLv = new CharLayerView(charAdapter,charListView,charList);
-        CharPool cPool = new CharPool();
-        if(true){
-            for(int i = 0; i < BotMsgFormater.gMilestone+1; i++){
-                if(BotMsgFormater.gChapter < cPool.charPool.size()){
-                    if(i < cPool.charPool.get(BotMsgFormater.gChapter).size()){
-                        charLv.updateLVChar(cPool.charPool.get(BotMsgFormater.gChapter).get(i).name,
-                                cPool.charPool.get(BotMsgFormater.gChapter).get(i).imgId);
-                    }
-                }
+
+        for(int i = 0; i < CharPool.charPool.get(ChapterPool.curChapter).size(); i++){
+            if(!CharPool.charPool.get(ChapterPool.curChapter).get(i).locked){
+                charLv.updateLVChar(CharPool.charPool.get(ChapterPool.curChapter).get(i).name,
+                        CharPool.charPool.get(ChapterPool.curChapter).get(i).imgId);
             }
-        }
-        else{
-            charLv.updateLVChar("HIHI",0);
         }
 
         charListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -54,10 +49,9 @@ public class CharMenuActivity extends AppCompatActivity {
                                     int position,
                                     long id) {
                 // TODO Auto-generated method stub
-                //Log.d("############","Items "+position);
+                Log.d("############","Char Pos "+position);
                 getCharConversation(position);
             }
-
         });
     }
     public void getCharConversation(int pos) {

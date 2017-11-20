@@ -70,6 +70,7 @@ public class MsgAdapter extends ArrayAdapter<MsgNode> {
             viewHolder.Right_img.setVisibility(view.GONE);
             viewHolder.Left_msg.setText(msg.getMessage());
         }  else if (msg.getType() == MsgNode.TypeSent) {
+            viewHolder.Right_img.setImageResource(R.drawable.hp);
             viewHolder.LeftLayout.setVisibility(view.GONE);
             viewHolder.left_img.setVisibility(view.GONE);
             viewHolder.RightLayout.setVisibility(view.VISIBLE);

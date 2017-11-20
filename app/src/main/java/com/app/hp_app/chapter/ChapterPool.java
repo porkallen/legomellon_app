@@ -9,10 +9,7 @@ import java.util.List;
  */
 
 public class ChapterPool {
-    public List<List<String>> chapterPool = new ArrayList<List<String>>();
-    ChapterPool(){
-        chapterPool.add(Arrays.asList("Chapter 1","To be a Scientist"));
-        chapterPool.add(Arrays.asList("Chapter 2","To be a Rocker"));
-    }
-
+    public static final int MAX_CHAPTER = 10;
+    public static int curChapter = 0;
+    static public List<ChapterDict> chapterPool = new ArrayList<ChapterDict>();
 }

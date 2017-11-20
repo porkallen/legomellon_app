@@ -15,6 +15,8 @@ import java.io.InputStreamReader;
 import android.util.Log;
 import android.os.AsyncTask;
 
+import com.app.hp_app.chapter.ChapterPool;
+import com.app.hp_app.charMenu.CharPool;
 import com.app.hp_app.conversation.MsgLayerView;
 import com.app.hp_app.conversation.MsgNode;
 import com.app.hp_app.R;
@@ -45,8 +47,8 @@ class BotSet {
         this.botMap[1] = new BotNode(BotNameList.botName[1],"<@U7JK660E6>",60002,R.drawable.aunt_petunia);
         this.botMap[2] = new BotNode(BotNameList.botName[2],"<@U7N6MU4AC>",60003,R.drawable.bob);
         this.botMap[3] = new BotNode(BotNameList.botName[3],"<@U7NA7RWC9>",60004,R.drawable.hogford);
-        this.botMap[4] = new BotNode(BotNameList.botName[4],"<@U7NA7RW12>",60005,R.drawable.ollivander);
-        this.botMap[5] = new BotNode(BotNameList.botName[5],"<@U7NA7RW34>",60006,R.drawable.hagrid);
+        this.botMap[4] = new BotNode(BotNameList.botName[4],"<@U7UNYBVB3>",60005,R.drawable.hagrid);
+        this.botMap[5] = new BotNode(BotNameList.botName[5],"<@U7VFE8PGV>",60006,R.drawable.ollivander);
     }
 }
 public class BotMsgHandl extends AsyncTask<String, String, String>{
@@ -186,7 +188,29 @@ public class BotMsgHandl extends AsyncTask<String, String, String>{
                 }
                 BotMsgNode node = BotMsgFormater.parseBotMsg(ret);
                 int imgId = 0;
+                ChapterPool.chapterPool.get(BotMsgFormater.gChapter).mileStone = BotMsgFormater.gMilestone;
 
+                for(int i = 0; i < CharPool.charPool.get(BotMsgFormater.gChapter).size(); i++){
+                    if(CharPool.charPool.get(BotMsgFormater.gChapter).get(i).locked){
+                        if(CharPool.charPool.get(BotMsgFormater.gChapter).get(i).showUpMileStone <=
+                                BotMsgFormater.gMilestone){
+                            CharPool.charPool.get(BotMsgFormater.gChapter).get(i).locked = false;
+
+                        }
+                    }
+                }
+
+                Log.i("AsyncTask", "Chapter unable to unlock..."+ChapterPool.chapterPool.get(BotMsgFormater.gChapter).mileStone );
+                Log.i("AsyncTask", "CBotMsgFormater..."+BotMsgFormater.gMilestone);
+                Log.i("AsyncTask", "BotMsgFormater..."+BotMsgFormater.gChapter);
+
+                if(ChapterPool.chapterPool.get(BotMsgFormater.gChapter).mileStone <= BotMsgFormater.gMilestone){
+                    ChapterPool.chapterPool.get(BotMsgFormater.gChapter).mileStone = BotMsgFormater.gMilestone;
+                    if(ChapterPool.chapterPool.size() > BotMsgFormater.gChapter+1)
+                        ChapterPool.chapterPool.get(BotMsgFormater.gChapter+1).locked = false;
+                    else
+                        Log.i("AsyncTask", "Chapter unable to unlock...");
+                }
                 for(int i = 0; i< bs.botMap.length;i++){
                     if(node.msgFrom == bs.botMap[i].botPort){
                         imgId = bs.botMap[i].imgId;

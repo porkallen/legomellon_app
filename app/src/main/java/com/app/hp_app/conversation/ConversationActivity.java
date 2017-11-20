@@ -19,6 +19,7 @@ import com.app.hp_app.R;
 import com.app.hp_app.botMsg.BotMsgFormater;
 import com.app.hp_app.botMsg.BotNameList;
 import com.app.hp_app.botMsg.BotMsgHandl;
+import com.app.hp_app.chapter.ChapterPool;
 import com.app.hp_app.charMenu.CharPool;
 
 
@@ -49,15 +50,33 @@ public class ConversationActivity extends AppCompatActivity {
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.autoText);
         lv = new MsgLayerView(msgAdapter,autocompleteView,sent,msgListView,msgList);
         int layoutItemId = android.R.layout.simple_dropdown_item_1line;
-        CharPool cPool = new CharPool();
         List<String> BotList;
-        if(charIdx != (-1) && charIdx < cPool.charPool.get(BotMsgFormater.gChapter).size()) {
-            String[] list = cPool.charPool.get(BotMsgFormater.gChapter).get(charIdx).charSet;
+        Log.i("AsyncTask", "charStartup CH: "+ChapterPool.curChapter+
+                "charIdx: "+ charIdx);
+
+        if(charIdx != (-1)){
+            String[] list = CharPool.charPool.get(ChapterPool.curChapter).
+                    get(charIdx).charSet;
             BotList = Arrays.asList(list);
+
+            if(!CharPool.charPool.get(ChapterPool.curChapter).get(charIdx).oneShot){
+                String tmpStr;
+                try {
+                    mhl = new BotMsgHandl(lv);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                tmpStr = CharPool.charPool.get(ChapterPool.curChapter).
+                        get(charIdx).startCmd;
+                Log.i("AsyncTask", "charStartup -->"+tmpStr);
+                CharPool.charPool.get(ChapterPool.curChapter).get(charIdx).oneShot = true;
+                mhl.execute(tmpStr);
+            }
         }
         else {
             BotList = Arrays.asList(BotNameList.botName);
         }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, layoutItemId, BotList);
         autocompleteView.setAdapter(adapter);
 

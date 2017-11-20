@@ -13,7 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.app.hp_app.R;
 import com.app.hp_app.botMsg.BotMsgFormater;
+import com.app.hp_app.botMsg.BotNameList;
+import com.app.hp_app.charMenu.CharDict;
 import com.app.hp_app.charMenu.CharMenuActivity;
+import com.app.hp_app.charMenu.CharPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +71,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if(one_shot == false) {
             introViewSetup();
+            ChapterPool.chapterPool.add(new ChapterDict(0,3,false,"Chapter 1","To be a Scientist"));
+            ChapterPool.chapterPool.add(new ChapterDict(0,5,true,"Chapter 2","To be a Rocker"));
+            List<CharDict> tmpList;
+            String[] tmpCharSet;
+            //Chapter 1
+            tmpList= new ArrayList<CharDict>();
+            tmpCharSet = new String[2];
+            tmpCharSet[0] = BotNameList.botName[0];
+            tmpCharSet[1] = BotNameList.botName[1];
+            tmpList.add(new CharDict(0,"Dudley Family",
+                    0,0,false,false,
+                    BotNameList.botName[1]+"bot exec",tmpCharSet,
+                    R.drawable.dudley_family));
+            tmpCharSet = new String[1];
+            tmpCharSet[0] = BotNameList.botName[3];
+            tmpList.add(new CharDict(1,"Hogford",0,
+                    1,true,false,
+                    BotNameList.botName[3]+"hog exec",tmpCharSet, R.drawable.hogford));
+            CharPool.charPool.add(tmpList);
+            //Chapter 2
+            tmpList= new ArrayList<CharDict>();
+            tmpCharSet = new String[1];
+            tmpCharSet[0] = BotNameList.botName[4];
+            tmpList.add(new CharDict(0,"Rubeus Hagrid",1,0,
+                    false,false,
+                    BotNameList.botName[4]+"hagrid exec",tmpCharSet,
+                    R.drawable.hagrid));
+            tmpCharSet = new String[1];
+            tmpCharSet[0] = BotNameList.botName[5];
+            tmpList.add(new CharDict(1,"Ollivander",1,
+                    3,true,false,
+                    BotNameList.botName[5]+"oli exec",
+                    tmpCharSet, R.drawable.ollivander));
+            CharPool.charPool.add(tmpList);
             one_shot = true;
         }
         else{
@@ -78,22 +115,32 @@ public class MainActivity extends AppCompatActivity {
         chapterListView.setAdapter(chapterAdapter);
         ChapterLayerView chapterLv = new ChapterLayerView(chapterAdapter,chapterListView,chapterList);
         ChapterPool cPool = new ChapterPool();
-        for(int i = 0; i< BotMsgFormater.gChapter+1; i++){
-            chapterLv.updateLVChapter(cPool.chapterPool.get(i).get(0),cPool.chapterPool.get(i).get(1));
+
+        for(int i = 0; i< ChapterPool.chapterPool.size(); i++){
+            if(!ChapterPool.chapterPool.get(i).locked) {
+                chapterLv.updateLVChapter(cPool.chapterPool.get(i).chapterName, cPool.chapterPool.get(i).subtitle);
+            }
         }
         chapterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int position,
+                                    long id) {
                 // TODO Auto-generated method stub
-                Log.d("############","Items ");
-                getChapter(chapterListView);
+                Log.d("############","Chapter Items "+position);
+                ChapterPool.curChapter = position;
+                getChapter(position);
             }
 
         });
     }
     /** This is the function that link chapter activity and conversation page , can set get gChapter later*/
-    public void getChapter(View view) {
+    public void getChapter(int chapter) {
         Intent intent = new Intent(this, CharMenuActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("chapter", chapter); //Your id
+        intent.putExtras(b); //Put your id to your next Intent
         startActivity(intent);
     }
 }
